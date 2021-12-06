@@ -1,0 +1,84 @@
+.product-container {
+    text-align: center;
+    border: 1px solid lightgrey;
+    width: 15%;
+    padding: 10px;
+    margin: 5px;
+}
+
+.product-image {
+    width: 50%;
+    height: auto;
+}
+
+.product-desc {
+    text-align: center;
+}
+
+.button-container {
+    width: 12%;
+    position: relative;
+    margin: 10px;
+}
+
+.button-submit {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.button-group button {
+    border: 1px solid black;
+    padding: 10px 10px;
+    float: left; /* Float the buttons side by side */
+    width: 7%;
+    margin: 10px;
+}
+
+.checkout-details-container {
+    width: 15%;
+    padding: 10px;
+    margin: 5px;
+}
+
+.login-container {
+    margin: auto;
+    width: 15%;
+    border: 3px solid black;
+    padding: 30px;
+    text-align: center;
+}
+
+.order-container {
+    margin: auto;
+    width: 30%;
+    border: 2px solid black;
+    padding: 30px;
+    text-align: center;
+}
+
+.order-product-container {
+    text-align: center;
+    font-size: 15px;
+    border: 1px solid lightgrey;
+    width: 30%;
+    margin: auto;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th{
+    font-size:20px;
+}
+th,td{
+    padding: 10px;
+}
+p.errors{
+    color:red;
+}
+h1{
+    margin-left: 3%;
+}
