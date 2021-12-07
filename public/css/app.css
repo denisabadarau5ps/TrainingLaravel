@@ -82,3 +82,9 @@ p.errors{
 h1{
     margin-left: 3%;
 }
+input[type=text]{
+    width: 100%;
+}
+textarea{
+    width: 100%;
+}

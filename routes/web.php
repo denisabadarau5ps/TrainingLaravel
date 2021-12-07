@@ -16,5 +16,5 @@ use App\Http\Controllers\ProductsController;
 */
 
 Route::get('/', 'App\Http\Controllers\ProductsController@index');
-
-
+Route::get('/cart','App\Http\Controllers\ProductsController@showCart');
+Route::post('/checkout','App\Http\Controllers\OrdersController@checkout');

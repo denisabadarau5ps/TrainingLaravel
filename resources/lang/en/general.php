@@ -10,4 +10,5 @@ return [
     |
     */
     'title' => 'Shopping Page',
+    'cart' => 'Shopping Cart',
 ];
