@@ -1,7 +1,7 @@
-<form method="post" action="/checkout">
+<form method="post" action="{{ route('checkout') }}">
     @csrf
     <div class="checkout-details-container">
-        <input type="text" name="name"  placeholder=@lang('customer.name') value="{{ old('name') }}">
+        <input type="text" id="name" name="name"  placeholder=@lang('customer.name') value="{{ old('name') }}">
         <br>
         @error('name')
             <p class="errors">{{ $message }}</p>

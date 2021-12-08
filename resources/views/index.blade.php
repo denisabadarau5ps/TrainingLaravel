@@ -3,7 +3,7 @@
 @section ('content')
     <h1>@lang('general.title')</h1>
     @foreach($products as $product)
-        <form method="post" action="/">
+        <form method="post" action="{{ route('index') }}">
             @csrf
             <input type="hidden" id="id" name="id" value="{{ $product->id }}">
             <div class="product-container">
@@ -13,6 +13,6 @@
         </form>
     @endforeach
     <div class="button-container">
-        <a href="/cart" class="button"> @lang('buttons.cart')</a>
+        <a href="{{ route('cart') }}" class="button"> @lang('buttons.cart')</a>
     </div>
 @endsection

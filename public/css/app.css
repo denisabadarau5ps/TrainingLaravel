@@ -75,7 +75,7 @@ p.errors{
 h1{
     margin-left: 3%;
 }
-input[type=text]{
+input#name{
     width: 100%;
 }
 textarea{

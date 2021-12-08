@@ -8,7 +8,7 @@
         </div>
     @endif
     @foreach($products as $product)
-        <form method="post" action="/cart">
+        <form method="post" action="{{ route('cart') }}">
             @csrf
             <input type="hidden" id="id" name="id" value="{{ $product->id }}">
             <div class="product-container">
@@ -19,6 +19,6 @@
     @endforeach
         @include('form')
         <div class="button-container">
-            <a href="/" class="button"> @lang('buttons.index')</a>
+            <a href="{{ route('index') }}" class="button"> @lang('buttons.index')</a>
         </div>
 @endsection
