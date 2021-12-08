@@ -47,4 +47,28 @@ class ProductsController extends Controller
         }
         return redirect('/cart');
     }
+
+    //show all products from products table
+    public function show()
+    {
+        $products = Product::all();
+        return view('products', ['products' => $products]);
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        Product::where('id', $id)->delete();
+        return redirect()->route('products');
+    }
+
+    public function showStoreForm()
+    {
+        return view('store');
+    }
+
+    public function store()
+    {
+        //
+    }
 }

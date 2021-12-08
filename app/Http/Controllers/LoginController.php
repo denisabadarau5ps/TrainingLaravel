@@ -20,8 +20,9 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
         if ($validateData['username'] == config('admin.username') && $validateData['password'] == config('admin.password')) {
-            return redirect()->route('index');
+            return redirect()->route('products');
         }
         return back()->withInput()->with('status', 'Wrong credentials');
     }
+
 }

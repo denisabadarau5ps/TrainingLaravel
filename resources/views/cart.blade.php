@@ -8,7 +8,7 @@
         </div>
     @endif
     @foreach($products as $product)
-        <form method="post" action="{{ route('cart') }}">
+        <form method="post" action="{{ route('removeFromCart') }}">
             @csrf
             <input type="hidden" id="id" name="id" value="{{ $product->id }}">
             <div class="product-container">

@@ -78,7 +78,7 @@ h1{
 input#name{
     width: 100%;
 }
-textarea{
+textarea#comments{
     width: 100%;
 }
 .button {
@@ -93,7 +93,7 @@ textarea{
     top: 50%;
     left: 50%;
 }
-[type="submit"]{
+input[type="submit"]{
     font: bold 15px Arial;
     background-color: #EEEEEE;
     text-decoration: none;
