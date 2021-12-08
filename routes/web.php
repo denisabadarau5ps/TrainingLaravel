@@ -20,5 +20,5 @@ Route::post('/', 'App\Http\Controllers\ProductsController@addToCart')->name('ind
 Route::get('/cart','App\Http\Controllers\ProductsController@showCart')->name('cart');
 Route::post('/cart','App\Http\Controllers\ProductsController@removeFromCart')->name('cart');
 Route::post('/checkout','App\Http\Controllers\OrdersController@checkout')->name('checkout');
-Route::get('/login', 'App\Http\Controllers\LoginController@showForm')->name('login');
+Route::get('/login', 'App\Http\Controllers\LoginController@show')->name('login');
 Route::post('/login', 'App\Http\Controllers\LoginController@login')->name('login');
