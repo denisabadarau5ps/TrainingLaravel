@@ -1,4 +1,4 @@
-<form method="POST" action="/checkout">
+<form method="post" action="/checkout">
     @csrf
     <div class="checkout-details-container">
         <input type="text" name="name"  placeholder=@lang('customer.name') value="{{ old('name') }}">

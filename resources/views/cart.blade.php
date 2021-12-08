@@ -2,18 +2,23 @@
 
 @section ('content')
     <h1>@lang('general.cart')</h1>
-    @foreach($products as $product)
-        <div class="product-container">
-            @include('product')
-            <a href="/cart?id={{ $product->id }}">@lang('buttons.remove')</a>
+    @if (session('message'))
+        <div class="error-message">
+            <p>{{ session('message') }}</p>
         </div>
+    @endif
+    @foreach($products as $product)
+        <form method="post" action="/cart">
+            @csrf
+            <input type="hidden" id="id" name="id" value="{{ $product->id }}">
+            <div class="product-container">
+                @include('product')
+                <button type="submit" value="remove">@lang('buttons.remove')</button>
+            </div>
+        </form>
     @endforeach
         @include('form')
         <div class="button-container">
-            <div class="button-submit">
-                <a href="/">
-                    <button>@lang('buttons.index')</button>
-                </a>
-            </div>
+            <a href="/" class="button"> @lang('buttons.index')</a>
         </div>
 @endsection

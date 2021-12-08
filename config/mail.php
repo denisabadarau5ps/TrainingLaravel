@@ -115,4 +115,10 @@ return [
         ],
     ],
 
+    'to' => [
+        'address' => env('SHOP_MANAGER_MAIL','hello@example.com'),
+        'name' => env('SHOP_MANAGER_NAME', 'Example'),
+    ],
+
+
 ];

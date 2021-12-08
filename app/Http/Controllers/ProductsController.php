@@ -25,4 +25,26 @@ class ProductsController extends Controller
         $request->session()->push('cart', $id);
         return redirect('/');
     }
+
+    //show all products from cart
+    public function showCart(Request $request)
+    {
+        $cart = $request->session()->get('cart', []);
+        $products = Product::whereIn('id', $cart)->get();
+        return view('cart', ['products' => $products]);
+    }
+
+    //remove products from cart
+    public function removeFromCart(Request $request)
+    {
+        $id = $request->input('id');
+        $products = $request->session()->pull('cart', []);
+        if (($key = array_search($id, $products)) !== false) {
+            unset($products[$key]);
+        }
+        foreach ($products as $key => $value) {
+            $request->session()->push('cart', $value);
+        }
+        return redirect('/cart');
+    }
 }

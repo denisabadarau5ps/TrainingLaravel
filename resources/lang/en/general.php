@@ -11,4 +11,5 @@ return [
     */
     'title' => 'Shopping Page',
     'cart' => 'Shopping Cart',
+    'order' => 'Your order is: ',
 ];
