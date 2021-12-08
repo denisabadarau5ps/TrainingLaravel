@@ -2,6 +2,6 @@
 <h3>{{ $product->title }}</h3>
 <div class="product-desc">
     {{ $product->description }}<br>
-    {{ $product->price }} $
+    {{ $product->price }}$
 </div>
 

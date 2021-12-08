@@ -3,16 +3,16 @@
 @section ('content')
     <h1>@lang('general.title')</h1>
     @foreach($products as $product)
-        <div class="product-container">
-            @include('product')
-            <a href="/?id={{ $product->id }}">@lang('buttons.add')</a>
-        </div>
+        <form method="post" action="/">
+            @csrf
+            <input type="hidden" id="id" name="id" value="{{ $product->id }}">
+            <div class="product-container">
+                @include('product')
+                <button type="submit" value="add">@lang('buttons.add')</button>
+            </div>
+        </form>
     @endforeach
     <div class="button-container">
-            <div class="button-submit">
-                <a href="/cart">
-                    <button> @lang('buttons.cart')</button>
-                </a>
-            </div>
-        </div>
+        <a href="/cart" class="button"> @lang('buttons.cart')</a>
+    </div>
 @endsection
