@@ -95,6 +95,13 @@ class ProductsController extends Controller
     public function edit(Request $request, Product $product)
     {
         $validatedData = $this->validateData($request);
+
+        //delete old image
+        $image_path = public_path('/images/') . $product->id .'.'. $product->extension;
+        if (\File::exists($image_path)) {
+            \File::delete($image_path);
+        }
+
         //update the product in products table
         $image = $request->file('fileToUpload');
         $product->update([
@@ -106,10 +113,6 @@ class ProductsController extends Controller
 
         //add the image in images folder
         $img = $product->id . '.' . $product->extension;
-        $image_path = public_path('/images/') . $img;
-        if (\File::exists($image_path)) {
-            \File::delete($image_path);
-        }
         $image->move(public_path('/images/'), $img);
         return redirect()->route('edit', ['product' => $product])->with('status', 'Product updated');
     }
