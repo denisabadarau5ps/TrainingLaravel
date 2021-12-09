@@ -5,8 +5,9 @@
     @foreach($products as $product)
         <div class="product-container">
             @include('product')
-            <a href="{{ route('showEditForm') }}" class="button-products">@lang('buttons.edit')</a>
             <br>
+            <a href="{{ route('showEditForm', ['product' => $product]) }}" class="button-products">@lang('buttons.edit')</a>
+            <br><br>
             <form method="post" action="{{ route('delete') }}">
                 @csrf
                 <input type="hidden" id="id" name="id" value="{{ $product->id }}">

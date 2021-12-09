@@ -118,3 +118,6 @@ input[type="submit"]{
     color: green;
     font-size: 25px;
 }
+input[type="file"]{
+    margin-left: 20%;
+}
