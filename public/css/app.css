@@ -78,7 +78,7 @@ h1{
 input#name{
     width: 100%;
 }
-textarea{
+textarea#comments{
     width: 100%;
 }
 .button {
@@ -93,7 +93,7 @@ textarea{
     top: 50%;
     left: 50%;
 }
-[type="submit"]{
+input[type="submit"]{
     font: bold 15px Arial;
     background-color: #EEEEEE;
     text-decoration: none;
@@ -105,4 +105,16 @@ textarea{
     color: red;
     margin-left: 5%;
     font-size: large;
+}
+.button-products {
+    font: bold 15px Arial;
+    background-color: #EEEEEE;
+    text-decoration: none;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border: 1px solid black;
+}
+.status{
+    color: green;
+    font-size: 25px;
 }

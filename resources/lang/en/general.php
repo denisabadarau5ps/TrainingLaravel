@@ -12,4 +12,7 @@ return [
     'title' => 'Shopping Page',
     'cart' => 'Shopping Cart',
     'order' => 'Your order is: ',
+    'products' => 'Products Page',
+    'add' => 'Add new product',
+    'edit' => 'Edit product',
 ];
