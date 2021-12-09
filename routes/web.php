@@ -31,8 +31,8 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/products', 'App\Http\Controllers\ProductsController@show')->name('products');
     Route::post('/products', 'App\Http\Controllers\ProductsController@delete')->name('delete');
 
-    Route::get('/edit', 'App\Http\Controllers\ProductsController@showEditForm')->name('showEditForm');
-    //Route::post('/edit', 'App\Http\Controllers\ProductsController@edit')->name('edit');
+    Route::get('/edit/{product}', 'App\Http\Controllers\ProductsController@showEditForm')->name('showEditForm');
+    Route::post('/edit/{product}', 'App\Http\Controllers\ProductsController@edit')->name('edit');
 
     Route::get('/store', 'App\Http\Controllers\ProductsController@showStoreForm')->name('showStoreForm');
     Route::post('/store', 'App\Http\Controllers\ProductsController@store')->name('store');

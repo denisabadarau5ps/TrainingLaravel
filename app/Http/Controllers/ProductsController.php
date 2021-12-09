@@ -72,20 +72,18 @@ class ProductsController extends Controller
     //add a product in products table
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'fileToUpload' => 'required|image',
-        ]);
+        //validate data
+        $validatedData = $this->validateData($request);
+
         //save the product in products table
         $image = $request->file('fileToUpload');
-        $product = new Product();
-        $product->title = $validatedData['title'];
-        $product->description = $validatedData['description'];
-        $product->price = $validatedData['price'];
-        $product->extension = $image->extension();
-        $product->save();
+        $product = Product::create([
+            'title' => $validatedData['title'],
+            'description' =>  $validatedData['description'],
+            'price' => $validatedData['price'],
+            'extension' => $image->extension()
+
+        ]);
 
         //add the image in images folder
         $img = $product->id . '.' . $product->extension;
@@ -94,9 +92,57 @@ class ProductsController extends Controller
     }
 
     //edit a product from products table
-    public function edit(Request $request)
+    public function edit(Request $request, Product $product)
     {
+<<<<<<< HEAD
+<<<<<<< Updated upstream
         //
+=======
+        $validatedData = $this->validateData($request);
+<<<<<<< Updated upstream
+        //update the product in products table
+=======
+
+        //delete old image
+>>>>>>> Stashed changes
+        $img = $product->id . '.' . $product->extension;
+        $image_path = public_path('/images/') . $img;
+        if (\File::exists($image_path)) {
+            \File::delete($image_path);
+        }
+<<<<<<< Updated upstream
+=======
+        $validatedData = $this->validateData($request);
+        //update the product in products table
+>>>>>>> 26938f743f425233970e3027338663d8d4190677
+=======
+
+>>>>>>> Stashed changes
+        $image = $request->file('fileToUpload');
+        $product->update([
+            'title' => $validatedData['title'],
+            'description' =>  $validatedData['description'],
+            'price' => $validatedData['price'],
+            'extension' => $image->extension()
+        ]);
+
+        //add the image in images folder
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+        $image->move(public_path('/images/'), $img);
+        return redirect()->route('edit', ['product' => $product])->with('status', 'Product updated');
+>>>>>>> Stashed changes
+=======
+        $img = $product->id . '.' . $product->extension;
+        $image_path = public_path('/images/') . $img;
+        if (\File::exists($image_path)) {
+            \File::delete($image_path);
+        }
+=======
+>>>>>>> Stashed changes
+        $image->move(public_path('/images/'), $img);
+        return redirect()->route('edit', ['product' => $product])->with('status', 'Product updated');
+>>>>>>> 26938f743f425233970e3027338663d8d4190677
     }
 
     public function showStoreForm()
@@ -104,10 +150,19 @@ class ProductsController extends Controller
         return view('store');
     }
 
-    public function showEditForm()
+    public function showEditForm(Product $product)
     {
-        return view('edit');
+        return view('edit', ['product' => $product]);
     }
 
+    public function validateData(Request $request)
+    {
+        return $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'fileToUpload' => 'required|image',
+        ]);
+    }
 
 }
