@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Faker\Core\File;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -55,6 +56,7 @@ class ProductsController extends Controller
         return view('products', ['products' => $products]);
     }
 
+    //deleye a product from products table
     public function delete(Request $request)
     {
         $id = $request->input('id');
@@ -67,13 +69,45 @@ class ProductsController extends Controller
         return redirect()->route('products');
     }
 
+    //add a product in products table
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'fileToUpload' => 'required|image',
+        ]);
+        //save the product in products table
+        $image = $request->file('fileToUpload');
+        $product = new Product();
+        $product->title = $validatedData['title'];
+        $product->description = $validatedData['description'];
+        $product->price = $validatedData['price'];
+        $product->extension = $image->extension();
+        $product->save();
+
+        //add the image in images folder
+        $img = $product->id . '.' . $product->extension;
+        $image->move(public_path('/images/'), $img);
+        return redirect()->route('store')->with('status', 'Product added');
+    }
+
+    //edit a product from products table
+    public function edit(Request $request)
+    {
+        //
+    }
+
     public function showStoreForm()
     {
         return view('store');
     }
 
-    public function store()
+    public function showEditForm()
     {
-        //
+        return view('edit');
     }
+
+
 }

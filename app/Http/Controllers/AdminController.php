@@ -15,11 +15,11 @@ class AdminController extends Controller
     //login for admin
     public function login(Request $request)
     {
-        $validateData = $request->validate([
+        $validatedData = $request->validate([
             'username' => 'required',
             'password' => 'required',
         ]);
-        if ($validateData['username'] == config('admin.username') && $validateData['password'] == config('admin.password')) {
+        if ($validatedData['username'] == config('admin.username') && $validatedData['password'] == config('admin.password')) {
             $request->session()->push('admin', true);
             return redirect()->route('products');
         }
