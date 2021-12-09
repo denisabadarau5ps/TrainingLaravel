@@ -58,7 +58,12 @@ class ProductsController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
-        Product::where('id', $id)->delete();
+        $product = Product::where('id', $id)->first();
+        $image_path = public_path('/images/') . $id .'.'. $product->extension;
+        if (\File::exists($image_path)) {
+            \File::delete($image_path);
+        }
+        $product->delete();
         return redirect()->route('products');
     }
 

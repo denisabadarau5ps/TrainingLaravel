@@ -23,9 +23,13 @@ Route::post('/cart','App\Http\Controllers\ProductsController@removeFromCart')->n
 
 Route::post('/checkout','App\Http\Controllers\OrdersController@checkout')->name('checkout');
 
-Route::get('/login', 'App\Http\Controllers\LoginController@show')->name('loginShow');
-Route::post('/login', 'App\Http\Controllers\LoginController@login')->name('login');
+Route::get('/login', 'App\Http\Controllers\AdminController@show')->name('loginShow');
+Route::post('/login', 'App\Http\Controllers\AdminController@login')->name('login');
+Route::get('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
 
-Route::get('/products', 'App\Http\Controllers\ProductsController@show')->name('products');
-Route::get('/store', 'App\Http\Controllers\ProductsController@showStoreForm')->name('showStoreForm');
-Route::post('/products', 'App\Http\Controllers\ProductsController@delete')->name('deleteProducts');
+Route::middleware(['admin'])->group(function () {
+    Route::get('/products', 'App\Http\Controllers\ProductsController@show')->name('products');
+    Route::get('/store', 'App\Http\Controllers\ProductsController@showStoreForm')->name('showStoreForm');
+    Route::post('/products', 'App\Http\Controllers\ProductsController@delete')->name('deleteProducts');
+});
+

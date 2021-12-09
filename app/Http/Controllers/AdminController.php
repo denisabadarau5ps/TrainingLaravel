@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class AdminController extends Controller
 {
     //show login form
     public function show()
@@ -20,9 +20,16 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
         if ($validateData['username'] == config('admin.username') && $validateData['password'] == config('admin.password')) {
+            $request->session()->push('admin', true);
             return redirect()->route('products');
         }
         return back()->withInput()->with('status', 'Wrong credentials');
     }
 
+    //logout for admin
+    public function logout(Request $request)
+    {
+        $request->session()->forget('admin');
+        return redirect()->route('index');
+    }
 }

@@ -18,7 +18,7 @@
     </div>
     <br>
     <div class="button-container">
-        <a href="{{ route('products') }}" class="button"> @lang('buttons.logout')</a>
+        <a href="{{ route('logout') }}" class="button"> @lang('buttons.logout')</a>
     </div>
 @endsection
 
