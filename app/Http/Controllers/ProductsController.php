@@ -24,7 +24,7 @@ class ProductsController extends Controller
             $request->session()->put('cart', []);
         }
         $request->session()->push('cart', $id);
-        return redirect('/');
+        return redirect()->route('index');
     }
 
     //show all products from cart
@@ -46,7 +46,7 @@ class ProductsController extends Controller
         foreach ($products as $key => $value) {
             $request->session()->push('cart', $value);
         }
-        return redirect('/cart');
+        return redirect()->route('showCart');
     }
 
     //show all products from products table
