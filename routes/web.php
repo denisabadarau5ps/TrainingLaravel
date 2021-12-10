@@ -15,26 +15,26 @@ use App\Http\Controllers\ProductsController;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\ProductsController@index')->name('index');
-Route::post('/', 'App\Http\Controllers\ProductsController@addToCart')->name('addCart');
+Route::get('/', 'App\Http\Controllers\IndexController@index')->name('index');
+Route::post('/', 'App\Http\Controllers\IndexController@store')->name('add.to.cart');
 
-Route::get('/cart','App\Http\Controllers\ProductsController@showCart')->name('showCart');
-Route::post('/cart','App\Http\Controllers\ProductsController@removeFromCart')->name('removeFromCart');
+Route::get('/cart','App\Http\Controllers\CartController@index')->name('show.cart');
+Route::post('/cart','App\Http\Controllers\CartController@remove')->name('remove.from.cart');
 
 Route::post('/checkout','App\Http\Controllers\OrdersController@checkout')->name('checkout');
 
-Route::get('/login', 'App\Http\Controllers\AdminController@show')->name('loginShow');
+Route::get('/login', 'App\Http\Controllers\AdminController@index')->name('login.show');
 Route::post('/login', 'App\Http\Controllers\AdminController@login')->name('login');
 Route::get('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
 
 Route::middleware(['admin'])->group(function () {
-    Route::get('/products', 'App\Http\Controllers\ProductsController@show')->name('products');
-    Route::post('/products', 'App\Http\Controllers\ProductsController@delete')->name('delete');
+    Route::get('/products', 'App\Http\Controllers\ProductsController@index')->name('products');
+    Route::post('/products', 'App\Http\Controllers\ProductsController@remove')->name('remove.product');
 
-    Route::get('/edit/{product}', 'App\Http\Controllers\ProductsController@showEditForm')->name('showEditForm');
+    Route::get('/edit/{product}', 'App\Http\Controllers\ProductsController@showEditForm')->name('show.edit.form');
     Route::post('/edit/{product}', 'App\Http\Controllers\ProductsController@edit')->name('edit');
 
-    Route::get('/store', 'App\Http\Controllers\ProductsController@showStoreForm')->name('showStoreForm');
+    Route::get('/store', 'App\Http\Controllers\ProductsController@showStoreForm')->name('show.store.form');
     Route::post('/store', 'App\Http\Controllers\ProductsController@store')->name('store');
 });
 

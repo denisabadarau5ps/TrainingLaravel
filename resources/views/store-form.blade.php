@@ -8,7 +8,7 @@
         @endif
         <form method="post" action="{{ route('store') }}" enctype="multipart/form-data">
             @csrf
-            <input type="text" name="title" placeholder=@lang('product.title') value="{{ old('title') }}" >
+            <input type="text" name="title" placeholder=@lang('product.title') value="{{ old('title') }}">
             <br>
             @error('title')
                 <p class="error-message">{{ $message }}</p>
@@ -20,13 +20,13 @@
                 <p class="error-message">{{ $message }}</p>
             @enderror
             <br>
-            <input type="number" name="price" placeholder=@lang('product.price') value="{{ old('price') }}" >
+            <input type="number" name="price" placeholder=@lang('product.price') value="{{ old('price') }}">
             <br>
             @error('price')
                 <p class="error-message">{{ $message }}</p>
             @enderror
             <br>
-            <input type="file" name="fileToUpload" id="fileToUpload" style="margin-left: 20%;" >
+            <input type="file" name="fileToUpload" id="fileToUpload" style="margin-left: 20%;">
             <br>
             @error('fileToUpload')
                 <p class="error-message">{{ $message }}</p>

@@ -8,125 +8,110 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-    //show all products that are not in cart
-    public function index(Request $request)
-    {
-        $cart = $request->session()->get('cart', []);
-        $products = Product::whereNotIn('id', $cart)->get();
-        return view('index', ['products' => $products]);
-    }
-
-    //add products in cart
-    public function addToCart(Request $request)
-    {
-        $id = $request->input('id');
-        if (!$request->session()->has('cart')) {
-            $request->session()->put('cart', []);
-        }
-        $request->session()->push('cart', $id);
-        return redirect()->route('index');
-    }
-
-    //show all products from cart
-    public function showCart(Request $request)
-    {
-        $cart = $request->session()->get('cart', []);
-        $products = Product::whereIn('id', $cart)->get();
-        return view('cart', ['products' => $products]);
-    }
-
-    //remove products from cart
-    public function removeFromCart(Request $request)
-    {
-        $id = $request->input('id');
-        $products = $request->session()->pull('cart', []);
-        if (($key = array_search($id, $products)) !== false) {
-            unset($products[$key]);
-        }
-        foreach ($products as $key => $value) {
-            $request->session()->push('cart', $value);
-        }
-        return redirect()->route('showCart');
-    }
-
-    //show all products from products table
-    public function show()
+    /**
+     * Show all products from products table
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function index()
     {
         $products = Product::all();
         return view('products', ['products' => $products]);
     }
 
-    //deleye a product from products table
-    public function delete(Request $request)
+    /**
+     * Remove a product from products table
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function remove(Request $request)
     {
-        $id = $request->input('id');
-        $product = Product::where('id', $id)->first();
-        $image_path = public_path('/images/') . $id .'.'. $product->extension;
-        if (\File::exists($image_path)) {
-            \File::delete($image_path);
+        if ($request->has('id')) {
+            $id = $request->input('id');
+            $product = Product::where('id', $id)->first();
+            $image_path = public_path('/images/') . $id . '.' . $product->extension;
+            if (\File::exists($image_path)) {
+                \File::delete($image_path);
+            }
+            $product->delete();
+            return redirect()->route('products');
         }
-        $product->delete();
-        return redirect()->route('products');
     }
 
-    //add a product in products table
+    /**
+     * Add a product in products table
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
-        //validate data
         $validatedData = $this->validateData($request);
 
-        //save the product in products table
         $image = $request->file('fileToUpload');
         $product = Product::create([
             'title' => $validatedData['title'],
-            'description' =>  $validatedData['description'],
+            'description' => $validatedData['description'],
             'price' => $validatedData['price'],
             'extension' => $image->extension()
 
         ]);
 
-        //add the image in images folder
         $img = $product->id . '.' . $product->extension;
         $image->move(public_path('/images/'), $img);
         return redirect()->route('store')->with('status', 'Product added');
     }
 
-    //edit a product from products table
+    /**
+     * Edit a product from products table
+     * @param Request $request
+     * @param Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function edit(Request $request, Product $product)
     {
         $validatedData = $this->validateData($request);
 
-        //delete old image
-        $image_path = public_path('/images/') . $product->id .'.'. $product->extension;
+        $image_path = public_path('/images/') . $product->id . '.' . $product->extension;
         if (\File::exists($image_path)) {
             \File::delete($image_path);
         }
 
-        //update the product in products table
         $image = $request->file('fileToUpload');
         $product->update([
             'title' => $validatedData['title'],
-            'description' =>  $validatedData['description'],
+            'description' => $validatedData['description'],
             'price' => $validatedData['price'],
             'extension' => $image->extension()
         ]);
 
-        //add the image in images folder
         $img = $product->id . '.' . $product->extension;
         $image->move(public_path('/images/'), $img);
         return redirect()->route('edit', ['product' => $product])->with('status', 'Product updated');
     }
 
+    /**
+     * Show store form for a product
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function showStoreForm()
     {
-        return view('store');
+        return view('store-form');
     }
 
+    /**
+     * Show edit form for a product
+     * @param Product $product
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function showEditForm(Product $product)
     {
-        return view('edit', ['product' => $product]);
+        return view('edit-form', ['product' => $product]);
     }
 
+    /**
+     * Validate data from add/edit form
+     * @param Request $request
+     * @return array
+     */
     public function validateData(Request $request)
     {
         return $request->validate([
@@ -136,5 +121,4 @@ class ProductsController extends Controller
             'fileToUpload' => 'required|image',
         ]);
     }
-
 }

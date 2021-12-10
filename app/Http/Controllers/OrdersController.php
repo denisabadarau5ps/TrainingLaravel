@@ -9,22 +9,25 @@ use Illuminate\Support\Facades\Mail;
 
 class OrdersController extends Controller
 {
+    /**
+     * Send an email to shopp manager with order details
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function checkout(Request $request)
     {
-        //validate form data
         $validatedData = $request->validate([
             'name' => 'required',
             'contacts' => 'required',
             'comments' => 'required'
         ]);
-        $cart = $request->session()->get('cart');
-        if (!empty($cart)) {
+        if ($request->session()->has('cart')) {
+            $cart = $request->session()->get('cart');
             $products = Product::whereIn('id', $cart)->get();
-            //send mail to shopp manager
             Mail::to(config('mail.to.adress'))
                 ->send(new Checkout($validatedData['name'], $validatedData['contacts'], $validatedData['comments'], $products));
-            $request->session()->flush();
-            return redirect('/');
+            $request->session()->forget('cart');
+            return redirect()->route('index');
         } else {
             return back()->withInput()->with('message', 'Cart cant be empty');
         }

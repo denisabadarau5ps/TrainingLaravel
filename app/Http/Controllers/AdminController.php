@@ -6,13 +6,20 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    //show login form
-    public function show()
+    /**
+     * Show login form
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function index()
     {
         return view('login');
     }
 
-    //login for admin
+    /**
+     * Login for admin
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function login(Request $request)
     {
         $validatedData = $request->validate([
@@ -26,7 +33,11 @@ class AdminController extends Controller
         return back()->withInput()->with('status', 'Wrong credentials');
     }
 
-    //logout for admin
+    /**
+     * Logout for admin
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout(Request $request)
     {
         $request->session()->forget('admin');

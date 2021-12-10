@@ -7,7 +7,7 @@
             <p class="errors">{{ $message }}</p>
         @enderror
         <br>
-        <textarea id="contacts" name="contacts" placeholder=@lang('customer.contacts')>{{ old('contacts') }}</textarea>
+        <input type="email" id="contacts" name="contacts" placeholder=@lang('customer.contacts') value={{old('contacts') }} >
         <br>
         @error('contacts')
         <p class="errors">{{ $message }}</p>
