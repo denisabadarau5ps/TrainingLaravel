@@ -31,10 +31,12 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/products', 'App\Http\Controllers\ProductsController@index')->name('products');
     Route::post('/products', 'App\Http\Controllers\ProductsController@remove')->name('remove.product');
 
-    Route::get('/edit/{product}', 'App\Http\Controllers\ProductsController@showEditForm')->name('show.edit.form');
-    Route::post('/edit/{product}', 'App\Http\Controllers\ProductsController@edit')->name('edit');
+    Route::get('/product/{id?}', 'App\Http\Controllers\ProductsController@showProductForm')->name('show.product.form');
+    //Route::post('/product', 'App\Http\Controllers\ProductsController@editOrStore')->name('store');
+    Route::post('/product/{id?}', 'App\Http\Controllers\ProductsController@save')->name('save');
+    //Route::get('/edit', 'App\Http\Controllers\ProductsController@showProductForm')->name('show.edit.form');
+    //Route::post('/edit/{product}', 'App\Http\Controllers\ProductsController@edit')->name('edit');
 
-    Route::get('/store', 'App\Http\Controllers\ProductsController@showStoreForm')->name('show.store.form');
-    Route::post('/store', 'App\Http\Controllers\ProductsController@store')->name('store');
+    //Route::post('/store', 'App\Http\Controllers\ProductsController@store')->name('store');
 });
 

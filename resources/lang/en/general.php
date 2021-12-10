@@ -13,6 +13,5 @@ return [
     'cart' => 'Shopping Cart',
     'order' => 'Your order is: ',
     'products' => 'Products Page',
-    'add' => 'Add new product',
-    'edit' => 'Edit product',
+    'product' => 'Product page'
 ];

@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="login-container">
-        <h1>@lang('general.add')</h1>
+        <h1>@lang('general.product')</h1>
         @if (session('status'))
             <p class="status">{{ session('status') }}</p>
         @endif
-        <form method="post" action="{{ route('store') }}" enctype="multipart/form-data">
+        <form method="post"action="/product{{ \request('id') ? '/' . \request('id') : '' }}" enctype="multipart/form-data">
             @csrf
             <input type="text" name="title" placeholder=@lang('product.title') value="{{ old('title') }}">
             <br>

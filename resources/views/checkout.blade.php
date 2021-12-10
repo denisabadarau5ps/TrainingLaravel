@@ -17,7 +17,7 @@
             <tr style="border-bottom: 1px solid black;">
                 <td>
                     <img height="100" width="100"
-                         src="{{ $message->embed(public_path() . '/images/' . $product->id .'.'. $product->extension ) }}"
+                         src="{{ url('storage/images/'.$product->id . '.' . $product->extension) }}"
                          alt=@lang('product.image')>
                 </td>
                 <td>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Faker\Core\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -28,9 +29,9 @@ class ProductsController extends Controller
         if ($request->has('id')) {
             $id = $request->input('id');
             $product = Product::where('id', $id)->first();
-            $image_path = public_path('/images/') . $id . '.' . $product->extension;
-            if (\File::exists($image_path)) {
-                \File::delete($image_path);
+            $imagename = $id . '.' . $product->extension;
+            if (Storage::exists($imagename)) {
+                Storage::delete($imagename);
             }
             $product->delete();
             return redirect()->route('products');
@@ -38,73 +39,13 @@ class ProductsController extends Controller
     }
 
     /**
-     * Add a product in products table
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {
-        $validatedData = $this->validateData($request);
-
-        $image = $request->file('fileToUpload');
-        $product = Product::create([
-            'title' => $validatedData['title'],
-            'description' => $validatedData['description'],
-            'price' => $validatedData['price'],
-            'extension' => $image->extension()
-
-        ]);
-
-        $img = $product->id . '.' . $product->extension;
-        $image->move(public_path('/images/'), $img);
-        return redirect()->route('store')->with('status', 'Product added');
-    }
-
-    /**
-     * Edit a product from products table
-     * @param Request $request
-     * @param Product $product
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function edit(Request $request, Product $product)
-    {
-        $validatedData = $this->validateData($request);
-
-        $image_path = public_path('/images/') . $product->id . '.' . $product->extension;
-        if (\File::exists($image_path)) {
-            \File::delete($image_path);
-        }
-
-        $image = $request->file('fileToUpload');
-        $product->update([
-            'title' => $validatedData['title'],
-            'description' => $validatedData['description'],
-            'price' => $validatedData['price'],
-            'extension' => $image->extension()
-        ]);
-
-        $img = $product->id . '.' . $product->extension;
-        $image->move(public_path('/images/'), $img);
-        return redirect()->route('edit', ['product' => $product])->with('status', 'Product updated');
-    }
-
-    /**
-     * Show store form for a product
+     * Show store/edit form for a product
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function showStoreForm()
+    public function showProductForm(Request $request)
     {
-        return view('store-form');
-    }
-
-    /**
-     * Show edit form for a product
-     * @param Product $product
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function showEditForm(Product $product)
-    {
-        return view('edit-form', ['product' => $product]);
+        $id = $request->input('id');
+        return view('product-form');
     }
 
     /**
@@ -120,5 +61,35 @@ class ProductsController extends Controller
             'price' => 'required|numeric',
             'fileToUpload' => 'required|image',
         ]);
+    }
+
+    /**
+     * Edit/store a product
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function save(Request $request)
+    {
+        $validatedData = $this->validateData($request);
+        $image = $request->file('fileToUpload');
+        if ($request->has('id')) {
+            $id = $request->input('id');
+            $product = Product::where('id', $id)->first();
+            $imagename = $product->id . '.' . $product->extension;
+            if (Storage::exists($imagename)) {
+                Storage::delete($imagename);
+            }
+        } else {
+            $product = new Product();
+        }
+        $product->title = $validatedData['title'];
+        $product->description = $validatedData['description'];
+        $product->price = $validatedData['price'];
+        $product->extension = $image->extension();
+        $product->save();
+
+        $imagename = $product->id . '.' . $product->extension;
+        $image->storeAs('public/images', $imagename);
+        return redirect()->route('save')->with('status', 'Product saved');
     }
 }
