@@ -42,10 +42,9 @@ class ProductsController extends Controller
      * Show store/edit form for a product
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function showProductForm(Request $request)
+    public function showProductForm(Request $request, $id = null)
     {
-        $id = $request->input('id');
-        return view('product-form');
+        return view('product-form', ['id' => $id]);
     }
 
     /**
@@ -68,12 +67,11 @@ class ProductsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Request $request)
+    public function save(Request $request, $id =  null)
     {
         $validatedData = $this->validateData($request);
         $image = $request->file('fileToUpload');
-        if ($request->has('id')) {
-            $id = $request->input('id');
+        if ($id != null) {
             $product = Product::where('id', $id)->first();
             $imagename = $product->id . '.' . $product->extension;
             if (Storage::exists($imagename)) {
@@ -90,6 +88,10 @@ class ProductsController extends Controller
 
         $imagename = $product->id . '.' . $product->extension;
         $image->storeAs('public/images', $imagename);
-        return redirect()->route('save')->with('status', 'Product saved');
+        if ($id == null) {
+            return redirect()->route('store')->with('status', 'Product saved');
+        } else {
+            return redirect()->route('edit', ['id' => $id])->with('status', 'Product saved');
+        }
     }
 }

@@ -6,7 +6,7 @@
         @if (session('status'))
             <p class="status">{{ session('status') }}</p>
         @endif
-        <form method="post"action="/product{{ \request('id') ? '/' . \request('id') : '' }}" enctype="multipart/form-data">
+        <form method="post"action="{{ $id == null ? route('store', ['id' => null]) : route('edit', ['id' => $id])  }}" enctype="multipart/form-data">
             @csrf
             <input type="text" name="title" placeholder=@lang('product.title') value="{{ old('title') }}">
             <br>

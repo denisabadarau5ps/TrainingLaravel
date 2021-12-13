@@ -33,7 +33,8 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('/product/{id?}', 'App\Http\Controllers\ProductsController@showProductForm')->name('show.product.form');
     //Route::post('/product', 'App\Http\Controllers\ProductsController@editOrStore')->name('store');
-    Route::post('/product/{id?}', 'App\Http\Controllers\ProductsController@save')->name('save');
+    Route::post('/product', 'App\Http\Controllers\ProductsController@save')->name('store');
+    Route::post('/product/{id}', 'App\Http\Controllers\ProductsController@save')->name('edit');
     //Route::get('/edit', 'App\Http\Controllers\ProductsController@showProductForm')->name('show.edit.form');
     //Route::post('/edit/{product}', 'App\Http\Controllers\ProductsController@edit')->name('edit');
 

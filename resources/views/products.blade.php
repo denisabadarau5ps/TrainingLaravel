@@ -6,8 +6,8 @@
         <div class="product-container">
             @include('product')
             <br>
-            <a href="/product/?id={{$product->id }}" class="button-products">@lang('buttons.edit')</a>
-            <br>
+            <a href="{{ route('show.product.form', ['id' => $product->id]) }}" class="button-products">@lang('buttons.edit')</a>
+            <br><br>
             <form method="post" action="{{ route('remove.product') }}">
                 @csrf
                 <input type="hidden" id="id" name="id" value="{{ $product->id }}">
@@ -16,7 +16,7 @@
         </div>
     @endforeach
     <div class="button-container">
-        <a href="{{ route('show.product.form') }}" class="button"> @lang('buttons.add')</a>
+        <a href="{{ route('show.product.form', ['id' => null]) }}" class="button"> @lang('buttons.add')</a>
     </div>
     <br>
     <div class="button-container">
