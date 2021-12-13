@@ -44,7 +44,7 @@ class ProductsController extends Controller
      */
     public function showProductForm(Request $request, $id = null)
     {
-        return view('product-form', ['id' => $id]);
+        return Product::where('id', $id)->exists() || $id == null ? view('product-form', ['id' => $id]) : abort(404);
     }
 
     /**
@@ -67,7 +67,7 @@ class ProductsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Request $request, $id =  null)
+    public function save(Request $request, $id = null)
     {
         $validatedData = $this->validateData($request);
         $image = $request->file('fileToUpload');
