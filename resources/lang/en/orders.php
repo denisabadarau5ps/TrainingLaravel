@@ -12,5 +12,6 @@ return [
     'no' => 'Order number',
     'customer' => 'Order customer',
     'date' => 'Created date',
-    'price' => 'Summed price'
+    'price' => 'Summed price',
+    'products' => 'Products',
 ];

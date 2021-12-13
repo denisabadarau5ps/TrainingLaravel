@@ -2,9 +2,8 @@
 
 @section ('content')
     <h1>@lang('general.cart')</h1>
-    <p><b>Name: </b>{{ $name }}</p>
-    <p><b>Contacts: </b>{{ $contacts }}</p>
-    <p><b>Comments: </b>{{ $comments }}</p>
+    <p><b>Name: </b>{{ $order->customer->name }}</p>
+    <p><b>Contacts: </b>{{ $order->customer->contacts }}</p>
     <h2>@lang('general.order')</h2>
     <table style="border-collapse:collapse;width:100%; border: 1px solid black; text-align: center">
         <tr style="border-bottom: 1px solid black;">
@@ -13,7 +12,7 @@
             <th>@lang('product.desc')</th>
             <th>@lang('product.price')</th>
         </tr>
-        @foreach($products as $product)
+        @foreach($order->products as $product)
             <tr style="border-bottom: 1px solid black;">
                 <td>
                     <img height="100" width="100"
@@ -32,5 +31,6 @@
             </tr>
         @endforeach
     </table>
+    <h2>TOTAL: {{ $order->total }}$</h2>
 @endsection
 

@@ -64,6 +64,10 @@ table, th, td {
     border-collapse: collapse;
 }
 
+table{
+    text-align: center;
+}
+
 th{
     font-size:20px;
 }

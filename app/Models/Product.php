@@ -10,4 +10,12 @@ class Product extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    /**
+     * The orders that belong to the product
+     */
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class)->withPivot(['product_price']);
+    }
 }

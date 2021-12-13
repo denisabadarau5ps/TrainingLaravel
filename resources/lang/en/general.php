@@ -13,5 +13,5 @@ return [
     'cart' => 'Shopping Cart',
     'order' => 'Your order is: ',
     'products' => 'Products Page',
-    'product' => 'Product page'
+    'product' => 'Product page',
 ];

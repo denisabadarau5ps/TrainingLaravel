@@ -11,22 +11,15 @@ class Checkout extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $name;
-    public $contacts;
-    public $comments;
-    public $products;
-
+    public $order;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($name, $contacts, $comments, $products)
+    public function __construct($order)
     {
-        $this->name = $name;
-        $this->contacts = $contacts;
-        $this->comments = $comments;
-        $this->products = $products;
+        $this->order = $order;
     }
 
     /**
@@ -37,10 +30,7 @@ class Checkout extends Mailable
     public function build()
     {
         return $this->view('checkout')->with([
-            'name' => $this->name,
-            'contacts' => $this->contacts,
-            'comments' => $this->comments,
-            'products' => $this->products,
+            'order' => $this->order,
         ]);
     }
 }
