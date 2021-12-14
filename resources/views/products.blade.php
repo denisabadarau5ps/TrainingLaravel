@@ -19,8 +19,9 @@
         <a href="{{ route('show.product.form', ['id' => null]) }}" class="button"> @lang('buttons.add')</a>
     </div>
     <br>
-    <div class="button-container">
-        <a href="{{ route('logout') }}" class="button"> @lang('buttons.logout')</a>
-    </div>
+    <form method="post" action="{{ route('logout') }}">
+        @csrf
+        <input type="submit" name="logout" value="@lang('buttons.logout')">
+    </form>
 @endsection
 

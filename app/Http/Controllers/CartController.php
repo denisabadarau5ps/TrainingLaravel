@@ -20,6 +20,23 @@ class CartController extends Controller
     }
 
     /**
+     * Add products in cart
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        if ($request->has('id')) {
+            $id = $request->input('id');
+            if (!$request->session()->has('cart')) {
+                $request->session()->put('cart', []);
+            }
+            $request->session()->push('cart', $id);
+            return redirect()->route('index');
+        }
+    }
+
+    /**
      * Remove products from cart
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse

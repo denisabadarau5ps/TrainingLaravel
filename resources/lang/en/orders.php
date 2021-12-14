@@ -10,8 +10,10 @@ return [
     |
     */
     'no' => 'Order number',
-    'customer' => 'Order customer',
+    'name' => 'Customer name',
     'date' => 'Created date',
     'price' => 'Summed price',
     'products' => 'Products',
+    'contact' => 'Contact',
+    'comments' => 'Comments',
 ];

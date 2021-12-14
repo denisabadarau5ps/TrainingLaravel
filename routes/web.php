@@ -16,17 +16,16 @@ use App\Http\Controllers\ProductsController;
 */
 
 Route::get('/', 'App\Http\Controllers\IndexController@index')->name('index');
-Route::post('/', 'App\Http\Controllers\IndexController@store')->name('add.to.cart');
+Route::post('/', 'App\Http\Controllers\CartController@store')->name('add.to.cart');
 
-Route::get('/cart','App\Http\Controllers\CartController@index')->name('show.cart');
-Route::post('/cart','App\Http\Controllers\CartController@remove')->name('remove.from.cart');
+Route::get('/cart', 'App\Http\Controllers\CartController@index')->name('show.cart');
+Route::post('/cart', 'App\Http\Controllers\CartController@remove')->name('remove.from.cart');
 
-Route::post('/checkout','App\Http\Controllers\OrdersController@checkout')->name('checkout');
-Route::get('/order/{order}', 'App\Http\Controllers\OrderController@index')->name('order');
+Route::post('/checkout', 'App\Http\Controllers\OrdersController@checkout')->name('checkout');
 
 Route::get('/login', 'App\Http\Controllers\AdminController@index')->name('login.show');
 Route::post('/login', 'App\Http\Controllers\AdminController@login')->name('login');
-Route::get('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
+Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
 
 Route::middleware(['admin'])->group(function () {
     Route::get('/products', 'App\Http\Controllers\ProductsController@index')->name('products');
@@ -37,5 +36,6 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/product/{id}', 'App\Http\Controllers\ProductController@save')->name('edit');
 
     Route::get('/orders', 'App\Http\Controllers\OrdersController@index')->name('orders');
+    Route::get('/order/{order}', 'App\Http\Controllers\OrderController@index')->name('order');
 });
 

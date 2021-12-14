@@ -4,24 +4,18 @@
     <table>
         <tr>
             <th>@lang('orders.no')</th>
-            <th>@lang('orders.customer')</th>
-            <th>@lang('orders.date')</th>
+            <th>@lang('orders.name')</th>
+            <th>@lang('orders.contact')</th>
+            <th>@lang('orders.comments')</th>
             <th>@lang('orders.price')</th>
-            <th>@lang('orders.products')</th>
         </tr>
         @foreach ($orders as $order)
         <tr>
-            <td>{{ $order->id }}</td>
+            <td><a href="{{ route('order',['order' => $order]) }}" >{{$order->id}}</a></td>
             <td>{{ $order->customer->name }}</td>
-            <td>{{ $order->created_at }}</td>
+            <td>{{ $order->customer->contacts }}</td>
+            <td>{{ $order->customer->comments }}</td>
             <td>{{ $order->total }}$</td>
-            <td>
-                <ul>
-                    @foreach ($order->products as $product)
-                        <li>{{ $product->title }}</li>
-                    @endforeach
-                </ul>
-            </td>
         </tr>
         @endforeach
     </table>

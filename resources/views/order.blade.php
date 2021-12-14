@@ -2,15 +2,36 @@
 
 @section('content')
     <div class="order-container">
-        <h1>{{ $order->customer->name }}, your order is: </h1>
-        @foreach ($order->products as $product)
-        <div class="order-product-container">
-            @include('product')
-        </div>
-        @endforeach
-        <p><b>Contact details</b>: {{ $order->customer->contacts }}</p>
-        <p><b>Total</b>: {{ $order->total }}$</p>
-        <a href="{{ route('index') }}" class="button-products">@lang('buttons.index')</a>
+        <h1>Order #{{ $order->id }} </h1>
+        <h3>Created at: {{ $order->created_at }}</h3>
+        <table style="border-collapse:collapse;width:100%; border: 1px solid black; text-align: center">
+            <tr style="border-bottom: 1px solid black;">
+                <th>@lang('product.image')</th>
+                <th>@lang('product.title')</th>
+                <th>@lang('product.desc')</th>
+                <th>@lang('product.price')</th>
+            </tr>
+            @foreach($order->products as $product)
+                <tr>
+                    <td>
+                        <img height="100" width="100"
+                             src="{{ url('storage/images/'.$product->id . '.' . $product->extension) }}"
+                             alt=@lang('product.image')>
+                    </td>
+                    <td>
+                        {{ $product->title }}
+                    </td>
+                    <td>
+                        {{ $product->description }}<br>
+                    </td>
+                    <td>
+                        {{ $product->pivot->product_price }}$
+                    </td>
+                </tr>
+            @endforeach
+        </table>
+        <br>
+        <a href="{{ route('orders') }}" class="button-products">@lang('buttons.orders')</a>
     </div>
 @endsection
 

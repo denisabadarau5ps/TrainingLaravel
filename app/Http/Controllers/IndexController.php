@@ -18,21 +18,4 @@ class IndexController extends Controller
         $products = Product::whereNotIn('id', $cart)->get();
         return view('index', ['products' => $products]);
     }
-
-    /**
-     * Add products in cart
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {
-        if ($request->has('id')) {
-            $id = $request->input('id');
-            if (!$request->session()->has('cart')) {
-                $request->session()->put('cart', []);
-            }
-            $request->session()->push('cart', $id);
-            return redirect()->route('index');
-        }
-    }
 }

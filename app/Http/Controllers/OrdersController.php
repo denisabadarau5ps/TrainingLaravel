@@ -41,6 +41,7 @@ class OrdersController extends Controller
             $customer = new Customer();
             $customer->name = $validatedData['name'];
             $customer->contacts = $validatedData['contacts'];
+            $customer->comments = $validatedData['comments'];
             $customer->save();
 
             $order = new Order();
@@ -53,12 +54,9 @@ class OrdersController extends Controller
             }
             $customer->order()->save($order);
 
-            $request->session()->forget('customer');
-            $request->session()->push('customer', $customer->id);
-
             Mail::to(config('mail.to.adress'))
                 ->send(new Checkout($order));
-            return redirect()->route('order', ['order' => $order]);
+            return redirect()->route('index');
         } else {
             return back()->withInput()->with('message', 'Cart cant be empty');
         }

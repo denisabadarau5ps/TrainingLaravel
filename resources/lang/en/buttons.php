@@ -20,4 +20,5 @@ return [
     'edit' => 'Edit',
     'logout' => 'Logout',
     'delete' => 'Delete',
+    'orders' => 'Go to orders'
 ];
