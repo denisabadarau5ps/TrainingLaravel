@@ -32,9 +32,9 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/products', 'App\Http\Controllers\ProductsController@index')->name('products');
     Route::post('/products', 'App\Http\Controllers\ProductsController@remove')->name('remove.product');
 
-    Route::get('/product/{id?}', 'App\Http\Controllers\ProductsController@showProductForm')->name('show.product.form');
-    Route::post('/product', 'App\Http\Controllers\ProductsController@save')->name('store');
-    Route::post('/product/{id}', 'App\Http\Controllers\ProductsController@save')->name('edit');
+    Route::get('/product/{id?}', 'App\Http\Controllers\ProductController@index')->name('show.product.form');
+    Route::post('/product', 'App\Http\Controllers\ProductController@save')->name('store');
+    Route::post('/product/{id}', 'App\Http\Controllers\ProductController@save')->name('edit');
 
     Route::get('/orders', 'App\Http\Controllers\OrdersController@index')->name('orders');
 });
