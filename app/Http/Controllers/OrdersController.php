@@ -49,7 +49,7 @@ class OrdersController extends Controller
 
             foreach ($products as $product) {
                 $order->products()->attach($product, ['product_price' => $product->price]);
-                $order->total+= $product->price;
+                $order->total += $product->price;
             }
             $customer->order()->save($order);
 
@@ -61,23 +61,6 @@ class OrdersController extends Controller
             return redirect()->route('order', ['order' => $order]);
         } else {
             return back()->withInput()->with('message', 'Cart cant be empty');
-        }
-    }
-
-    /**
-     * Order details after checkout
-     * @param Request $request
-     * @param $order
-     */
-    public function order(Request $request, $order)
-    {
-        if (Order::where('id', $order)->exists() && Order::where('id', $order)->first()->customer->id == $request->session()->get('customer')[0]) {
-            $order = Order::where('id', $order)->first();
-            return view('order', [
-                'order' => $order,
-            ]);
-        } else {
-            abort(404);
         }
     }
 

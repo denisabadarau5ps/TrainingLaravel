@@ -22,7 +22,7 @@ Route::get('/cart','App\Http\Controllers\CartController@index')->name('show.cart
 Route::post('/cart','App\Http\Controllers\CartController@remove')->name('remove.from.cart');
 
 Route::post('/checkout','App\Http\Controllers\OrdersController@checkout')->name('checkout');
-Route::get('/order/{order}', 'App\Http\Controllers\OrdersController@order')->name('order');
+Route::get('/order/{order}', 'App\Http\Controllers\OrderController@index')->name('order');
 
 Route::get('/login', 'App\Http\Controllers\AdminController@index')->name('login.show');
 Route::post('/login', 'App\Http\Controllers\AdminController@login')->name('login');
