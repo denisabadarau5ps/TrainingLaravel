@@ -29,6 +29,10 @@ class ProductsController extends Controller
         if ($request->has('id')) {
             $id = $request->input('id');
             $product = Product::where('id', $id)->first();
+            $imagename = $product->id . '.' . $product->extension;
+            if (Storage::exists($imagename)) {
+                Storage::delete($imagename);
+            }
             $product->delete();
             return redirect()->route('products');
         }
