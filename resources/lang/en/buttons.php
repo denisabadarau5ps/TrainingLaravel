@@ -20,5 +20,9 @@ return [
     'edit' => 'Edit',
     'logout' => 'Logout',
     'delete' => 'Delete',
-    'orders' => 'Go to orders'
+    'orders' => 'Go to orders',
+    'details' => 'Details',
+    'rating' => 'Rating',
+    'approve' => 'Approve',
+    'reject' => 'Reject',
 ];

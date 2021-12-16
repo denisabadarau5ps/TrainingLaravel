@@ -18,4 +18,13 @@ class Product extends Model
     {
         return $this->belongsToMany(Order::class)->withPivot('product_price');
     }
+
+    /**
+     * Get the ratings for the product
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
 }

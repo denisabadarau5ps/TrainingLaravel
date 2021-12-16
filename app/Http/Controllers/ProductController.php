@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -62,6 +63,26 @@ class ProductController extends Controller
             return redirect()->route('store')->with('status', 'Product saved');
         } else {
             return redirect()->route('edit', ['id' => $id])->with('status', 'Product saved');
+        }
+    }
+
+    /**
+     * Show details about a product
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|void
+     */
+    public function show(Request $request, $id)
+    {
+        if (Product::where('id', $id)->exists()) {
+            $product = Product::where('id', $id)->first();
+            $ratings = RatingsController::approvedRatings($id);
+            return view('product-details', [
+                'product' => $product,
+                'ratings' => $ratings
+            ]);
+        } else {
+            abort(404);
         }
     }
 }

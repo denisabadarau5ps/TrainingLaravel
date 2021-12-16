@@ -14,4 +14,5 @@ return [
     'order' => 'Your order is: ',
     'products' => 'Products Page',
     'product' => 'Product page',
+    'reviews' => 'Reviews',
 ];
