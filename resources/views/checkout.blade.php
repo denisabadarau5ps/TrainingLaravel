@@ -4,6 +4,7 @@
     <h1>@lang('general.cart')</h1>
     <p><b>Name: </b>{{ $order->customer->name }}</p>
     <p><b>Contacts: </b>{{ $order->customer->contacts }}</p>
+    <p><b>Comments: </b>{{ $order->customer->comments }}</p>
     <h2>@lang('general.order')</h2>
     <table style="border-collapse:collapse;width:100%; border: 1px solid black; text-align: center">
         <tr style="border-bottom: 1px solid black;">
