@@ -13,9 +13,12 @@ class ProductController extends Controller
      * Show store/edit form for a product
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index(Request $request, $id = null)
+    public function index($id = null)
     {
-        return Product::where('id', $id)->exists() || $id == null ? view('product-form', ['id' => $id]) : abort(404);
+        return Product::where('id', $id)
+            ->exists() || $id == null
+            ? view('product-form', ['id' => $id])
+            : abort(404);
     }
 
     /**
@@ -23,7 +26,7 @@ class ProductController extends Controller
      * @param Request $request
      * @return array
      */
-    public function validateData(Request $request)
+    public function validateData(Request $request): array
     {
         return $request->validate([
             'title' => 'required',
@@ -38,7 +41,7 @@ class ProductController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Request $request, $id = null)
+    public function save(Request $request, $id = null): \Illuminate\Http\RedirectResponse
     {
         $validatedData = $this->validateData($request);
         $image = $request->file('fileToUpload');
@@ -60,26 +63,27 @@ class ProductController extends Controller
         $imagename = $product->id . '.' . $product->extension;
         $image->storeAs('public/images', $imagename);
         if ($id == null) {
-            return redirect()->route('store')->with('status', 'Product saved');
+            return redirect()->route('store')
+                ->with('status', 'Product saved');
         } else {
-            return redirect()->route('edit', ['id' => $id])->with('status', 'Product saved');
+            return redirect()->route('edit', ['id' => $id])
+                ->with('status', 'Product saved');
         }
     }
 
     /**
      * Show details about a product
-     * @param Request $request
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|void
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
         if (Product::where('id', $id)->exists()) {
-            $product = Product::where('id', $id)->first();
-            $ratings = RatingsController::approvedRatings($id);
+            $product = Product::with('ratings')
+                ->where('id', $id)
+                ->first();
             return view('product-details', [
-                'product' => $product,
-                'ratings' => $ratings
+                'product' => $product
             ]);
         } else {
             abort(404);

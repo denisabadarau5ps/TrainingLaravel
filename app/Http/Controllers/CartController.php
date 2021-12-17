@@ -24,7 +24,7 @@ class CartController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         if ($request->has('id')) {
             $id = $request->input('id');
@@ -41,7 +41,7 @@ class CartController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function remove(Request $request)
+    public function remove(Request $request): \Illuminate\Http\RedirectResponse
     {
         if ($request->has('id')) {
             $id = $request->input('id');

@@ -10,7 +10,7 @@ class Customer extends Model
     /**
      * Get the order record associated with the user
      */
-    public function order()
+    public function order(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Order::class);
     }

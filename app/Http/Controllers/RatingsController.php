@@ -13,14 +13,14 @@ class RatingsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validatedData = $request->validate([
             'rating' => 'required|numeric',
             'cname' => 'required',
             'comment' => 'required',
         ]);
-        $product = Product::where('id', $request->input('id'))->first();
+        $product = Product::findOrFail($request->input('id'));
         $rating = new Rating();
         $rating->rating = $validatedData['rating'];
         $rating->name = $validatedData['cname'];
@@ -30,27 +30,14 @@ class RatingsController extends Controller
     }
 
     /**
-     * All approved ratings for a product
-     * @param $id
-     * @return array|void
-     */
-    static public function approvedRatings($id)
-    {
-        if (Product::where('id', $id)->exists()) {
-            $ratings = Rating::where('approved', 1)->where('product_id', $id)->exists() ? Rating::where('approved', 1)->where('product_id', $id)->orderBy('created_at','desc')->get() : [];
-            return $ratings;
-        } else {
-            abort(404);
-        }
-    }
-
-    /**
      * All unprocessed ratings
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        $ratings = Rating::where('approved', 0)->get();
+        $ratings = Rating::where('approved', 0)
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('reviews', ['ratings' => $ratings]);
     }
 
@@ -58,9 +45,8 @@ class RatingsController extends Controller
     {
         if ($request->has('id')) {
             $id = $request->input('id');
-            $rating = Rating::where('id', $id)->first();
-            $rating->approved = 1;
-            $rating->save();
+            Rating::findOrFail($id)
+                ->update(['approved' => 1]);
             return redirect()->route('show.ratings');
         } else {
             abort(404);
@@ -71,8 +57,7 @@ class RatingsController extends Controller
     {
         if ($request->has('id')){
             $id = $request->input('id');
-            $rating = Rating::where('id', $id)->first();
-            $rating->delete();
+            Rating::findOrFail($id)->delete();
             return redirect()->route('show.ratings');
         } else {
             abort(404);

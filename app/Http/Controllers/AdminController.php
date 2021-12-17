@@ -20,13 +20,14 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(Request $request)
+    public function login(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validatedData = $request->validate([
             'username' => 'required',
             'password' => 'required',
         ]);
-        if ($validatedData['username'] == config('admin.username') && $validatedData['password'] == config('admin.password')) {
+        if ($validatedData['username'] == config('admin.username')
+            && $validatedData['password'] == config('admin.password')) {
             $request->session()->push('admin', true);
             return redirect()->route('products');
         }
@@ -38,7 +39,7 @@ class AdminController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function logout(Request $request)
+    public function logout(Request $request): \Illuminate\Http\RedirectResponse
     {
         $request->session()->forget('admin');
         return redirect()->route('index');

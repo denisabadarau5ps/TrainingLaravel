@@ -17,7 +17,11 @@
                         <option value="{{$rate}}" {{ old('rating') == $rate ? 'selected' : ''}}>{{$rate}}</option>
                     @endforeach
                 </select>
-                <br><br>
+                <br>
+                @error('rating')
+                <p class="error-message">{{$message}}</p>
+                @enderror
+                <br>
                 <input type="text" name="cname" id="cname" placeholder="@lang('customer.name')"
                        value="{{old('cname')}}">
                 <br>
@@ -36,10 +40,10 @@
             </form>
         </div>
         <br>
-        @if ($ratings != [])
+        @if ($product->ratings != [])
             <div class="ratings">
                 <h2>@lang('general.reviews')</h2>
-                @foreach($ratings as $rating)
+                @foreach($product->ratings as $rating)
                     <div class="rate">
                         <p><b>{{$rating->name}}: </b><span>{{$rating->comment}}</span></p>
                         <p><b>Rating: </b>{{$rating->rating}}</p>

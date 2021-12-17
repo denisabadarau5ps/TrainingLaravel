@@ -12,7 +12,7 @@ class Order extends Model
     /**
      * Get the customer that owns the order
      */
-    public function customer()
+    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
@@ -20,7 +20,7 @@ class Order extends Model
     /**
      * The products that belong to the order
      */
-    public function products()
+    public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Product::class)->withPivot('product_price');
     }

@@ -14,17 +14,17 @@ class Product extends Model
     /**
      * The orders that belong to the product
      */
-    public function orders()
+    public function orders(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Order::class)->withPivot('product_price');
     }
 
     /**
-     * Get the ratings for the product
+     * Get the approved ratings for the product
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ratings()
+    public function ratings(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Rating::class)->where('approved', '=', '1')->orderBy('created_at', 'desc');
     }
 }

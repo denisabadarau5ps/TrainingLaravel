@@ -16,7 +16,7 @@ class OrdersController extends Controller
      * @param Request $request
      * @return array
      */
-    public function validateData(Request $request)
+    public function validateData(Request $request): array
     {
         return $request->validate([
             'name' => 'required',
@@ -49,7 +49,9 @@ class OrdersController extends Controller
             $customer->order()->save($order);
 
             foreach ($products as $product) {
-                $order->products()->attach($product, ['product_price' => $product->price]);
+                $order->products()->attach($product, [
+                    'product_price' => $product->price
+                ]);
                 $order->total += $product->price;
             }
             $customer->order()->save($order);

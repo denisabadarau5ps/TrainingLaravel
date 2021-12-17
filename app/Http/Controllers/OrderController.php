@@ -9,10 +9,9 @@ class OrderController extends Controller
 {
     /**
      * Order details after checkout
-     * @param Request $request
      * @param $order
      */
-    public function index(Request $request, $order)
+    public function index($order)
     {
         if (Order::where('id', $order)->exists()) {
             $order = Order::where('id', $order)->first();
