@@ -17,12 +17,12 @@ use App\Http\Controllers\ProductsController;
 
 Route::get('/', 'App\Http\Controllers\IndexController@index')->name('index');
 Route::post('/', 'App\Http\Controllers\CartController@store')->name('add.to.cart');
-Route::post('/rating', 'App\Http\Controllers\RatingsController@store')->name('store.rating');
+/*Route::post('/rating', 'App\Http\Controllers\RatingsController@store')->name('store.rating');
 Route::get('/rating/{id}', 'App\Http\Controllers\ProductController@show')->name('show.product');
-
+*/
 Route::get('/cart', 'App\Http\Controllers\CartController@index')->name('show.cart');
 Route::post('/cart', 'App\Http\Controllers\CartController@remove')->name('remove.from.cart');
-
+/*
 Route::post('/checkout', 'App\Http\Controllers\OrdersController@checkout')->name('checkout');
 
 Route::get('/login', 'App\Http\Controllers\AdminController@index')->name('login.show');
@@ -43,6 +43,5 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/ratings', 'App\Http\Controllers\RatingsController@index')->name('show.ratings');
     Route::post('/ratings/approve', 'App\Http\Controllers\RatingsController@approve')->name('approve.rating');
     Route::post('/ratings/delete', 'App\Http\Controllers\RatingsController@reject')->name('reject.rating');
-
-});
+});*/
 

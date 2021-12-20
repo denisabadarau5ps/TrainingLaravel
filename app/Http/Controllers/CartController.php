@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -16,7 +17,9 @@ class CartController extends Controller
     {
         $cart = $request->session()->get('cart', []);
         $products = Product::whereIn('id', $cart)->get();
-        return view('cart', ['products' => $products]);
+        if ($request->ajax()) {
+            return response()->json($products);
+        }
     }
 
     /**
@@ -24,7 +27,7 @@ class CartController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request)
     {
         if ($request->has('id')) {
             $id = $request->input('id');
@@ -32,7 +35,7 @@ class CartController extends Controller
                 $request->session()->put('cart', []);
             }
             $request->session()->push('cart', $id);
-            return redirect()->route('index');
+            return response()->json(['succes' => 'Product added']);
         }
     }
 
@@ -41,7 +44,7 @@ class CartController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function remove(Request $request): \Illuminate\Http\RedirectResponse
+    public function remove(Request $request)
     {
         if ($request->has('id')) {
             $id = $request->input('id');
@@ -52,7 +55,7 @@ class CartController extends Controller
             foreach ($products as $key => $value) {
                 $request->session()->push('cart', $value);
             }
-            return redirect()->route('show.cart');
+            return response()->json(['succes' => 'Product removed']);
         }
     }
 }
