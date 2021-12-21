@@ -58,9 +58,9 @@ class OrdersController extends Controller
 
             Mail::to(config('mail.to.adress'))
                 ->send(new Checkout($order));
-            return redirect()->route('index');
+            return response()->json(['succes' => 'Successfully']);
         } else {
-            return back()->withInput()->with('message', 'Cart cant be empty');
+            return response()->json(['message' => 'Cart cant be empty']);
         }
     }
 

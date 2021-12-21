@@ -22,9 +22,10 @@ Route::get('/rating/{id}', 'App\Http\Controllers\ProductController@show')->name(
 */
 Route::get('/cart', 'App\Http\Controllers\CartController@index')->name('show.cart');
 Route::post('/cart', 'App\Http\Controllers\CartController@remove')->name('remove.from.cart');
-/*
+
 Route::post('/checkout', 'App\Http\Controllers\OrdersController@checkout')->name('checkout');
 
+/*
 Route::get('/login', 'App\Http\Controllers\AdminController@index')->name('login.show');
 Route::post('/login', 'App\Http\Controllers\AdminController@login')->name('login');
 Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');

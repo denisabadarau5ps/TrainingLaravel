@@ -54,12 +54,45 @@
                                     (window.location.hash.match(/#cart(\/\d+)*/) ? '#cart/' : '#'),
                                     product.id,
                                     '" class="button-products">',
-                                    (window.location.hash.match(/#cart(\/\d+)*/) ? '@lang('buttons.remove')' : '@lang('buttons.add')'),
+                                    (window.location.hash.match(/#cart(\/\d+)*/) ?
+                                        '@lang('buttons.remove')' :
+                                        '@lang('buttons.add')'),
                                     '</a>',
                                 '<td>'
                             ].join('');
                     });
 
+                    return html;
+                }
+
+                /**
+                 * A function that render checkout form
+                 * @returns {*|string}
+                 */
+                function checkoutForm() {
+                    html = [
+                        '<form method="post" class="checkout">',
+                            '@csrf',
+                            '<span class="errors" id="cartErrorMsg"></span>',
+                            '<input type="text" id="name" name="name"  ' +
+                            'placeholder=@lang('customer.name') value="{{ old('name') }}">',
+                            '<br>',
+                            '<span class="errors" id="nameErrorMsg"></span>',
+                            '<br>',
+                            '<input type="email" id="contacts" name="contacts" ' +
+                            'placeholder=@lang('customer.contacts')
+                                value={{old('contacts') }} >',
+                            '<br>',
+                            '<span class="errors" id="contactsErrorMsg"></span>',
+                            '<br>',
+                            '<textarea id="comments" name="comments" rows="5" ' +
+                            'placeholder=@lang('customer.comments')>{{ old('comments') }}</textarea>',
+                            '<br>' +
+                            '<span class="errors" id="commentsErrorMsg"></span>',
+                            '<br>',
+                            '<input type="submit" name="checkout" value=@lang('buttons.checkout')>',
+                        '</form>'
+                    ].join('');
                     return html;
                 }
 
@@ -71,11 +104,17 @@
                     $('.page').hide();
 
                     switch (window.location.hash) {
+                        /**
+                         * Case for cart page
+                         */
                         case '#cart':
                             // Show the cart page
                             $('.cart').show();
+                            //Show the customer form with checkout details
+                            $('.checkout-details-container').html(checkoutForm());
                             // Load the cart products from the server
-                            $.ajax('/cart', {
+                            $.ajax({
+                                url: '{{ route('show.cart') }}',
                                 dataType: 'json',
                                 success: function (response) {
                                     // Render the products in the cart list
@@ -83,14 +122,13 @@
                                 }
                             });
                             break;
-
                         /**
-                         * case for removing products from cart
+                         * Case for removing products from cart
                          */
                         case (window.location.hash.match(/#cart\/\d+/) || {}).input:
                             $.ajax({
                                 type: 'post',
-                                url: '/cart',
+                                url: '{{ route('remove.from.cart') }}',
                                 data: {'id': window.location.hash.split('/')[1]},
                                 dataType: 'json',
                                 success: function () {
@@ -99,12 +137,12 @@
                             });
                             break;
                         /**
-                         * case for adding products to cart
+                         * Case for adding products to cart
                          */
                         case (window.location.hash.match(/#\d+/) || {}).input:
                             $.ajax({
                                 type: 'post',
-                                url: '/',
+                                url: '{{ route('add.to.cart') }}',
                                 data: {'id': window.location.hash.split('#')[1]},
                                 dataType: 'json',
                                 success: function () {
@@ -117,7 +155,8 @@
                             // Show the index page
                             $('.index').show();
                             // Load the index products from the server
-                            $.ajax('/', {
+                            $.ajax({
+                                url: '{{ route('index') }}',
                                 dataType: 'json',
                                 success: function (response) {
                                     // Render the products in the index list
@@ -129,8 +168,39 @@
                 }
 
                 window.onhashchange();
+
+                /**
+                 * Checkout
+                 */
+                 $('.checkout').submit(function (e) {
+                    e.preventDefault();
+
+                    let name = $('#name').val();
+                    let contacts = $('#contacts').val();
+                    let comments = $('#comments').val();
+
+                    $.ajax({
+                        type: 'post',
+                        url: '{{ route('checkout') }}',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            name: name,
+                            contacts: contacts,
+                            comments: comments,
+                        },
+                        success: function () {
+                            window.location.hash = "#";
+                        },
+                        error: function (response) {
+                            $('#nameErrorMsg').text(response.responseJSON.errors.name);
+                            $('#contactsErrorMsg').text(response.responseJSON.errors.contacts);
+                            $('#commentsErrorMsg').text(response.responseJSON.errors.comments);
+                        }
+                    });
+                });
             });
         </script>
+
     </head>
     <body>
         <!-- The index page -->
@@ -140,7 +210,7 @@
 
             <!-- A link to go to the cart by changing the hash -->
             <div class="button-container">
-                <a href="#cart" class="button">Go to cart</a>
+                <a href="#cart" class="button">@lang('buttons.cart')</a>
             </div>
         </div>
 
@@ -149,9 +219,13 @@
             <!-- The cart element where the products list is rendered -->
             <table class="list"></table>
 
+            <!-- The checkout form for the customer-->
+            <div class="checkout-details-container">
+            </div>
+
             <!-- A link to go to the index by changing the hash -->
             <div class="button-container">
-                <a href="#" class="button">Go to index</a>
+                <a href="#" class="button">@lang('buttons.index')</a>
             </div>
         </div>
     </body>

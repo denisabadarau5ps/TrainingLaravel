@@ -12,7 +12,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('login');
+        session()->pull('admin');
+        return response()->json(['success' => 'success']);
     }
 
     /**
@@ -29,9 +30,8 @@ class AdminController extends Controller
         if ($validatedData['username'] == config('admin.username')
             && $validatedData['password'] == config('admin.password')) {
             $request->session()->push('admin', true);
-            return redirect()->route('products');
+            return response()->json(['success' => 'Success']);
         }
-        return back()->withInput()->with('status', 'Wrong credentials');
     }
 
     /**
