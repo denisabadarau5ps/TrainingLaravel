@@ -25,11 +25,11 @@ Route::post('/cart', 'App\Http\Controllers\CartController@remove')->name('remove
 
 Route::post('/checkout', 'App\Http\Controllers\OrdersController@checkout')->name('checkout');
 
-/*
+
 Route::get('/login', 'App\Http\Controllers\AdminController@index')->name('login.show');
 Route::post('/login', 'App\Http\Controllers\AdminController@login')->name('login');
 Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
-
+/*
 Route::middleware(['admin'])->group(function () {
     Route::get('/products', 'App\Http\Controllers\ProductsController@index')->name('products');
     Route::post('/products', 'App\Http\Controllers\ProductsController@remove')->name('remove.product');

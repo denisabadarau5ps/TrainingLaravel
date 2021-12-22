@@ -13,7 +13,7 @@ class AdminController extends Controller
     public function index()
     {
         session()->pull('admin');
-        return response()->json(['success' => 'success']);
+        return response()->json(['success' => 'Success']);
     }
 
     /**

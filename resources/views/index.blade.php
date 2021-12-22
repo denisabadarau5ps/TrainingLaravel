@@ -7,12 +7,12 @@
 
         <!-- Custom JS script -->
         <script type="text/javascript">
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             $(document).ready(function () {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
                 /**
                  * A function that takes a products array and renders it's html
                  *
@@ -41,39 +41,29 @@
                     $.each(products, function (key, product) {
                         html += [
                             '<tr>',
-                                '<td> ' ,
-                                    '<img height="100" ' ,
-                                    'width="100" ' ,
-                                    'src="storage/images/' + product.id + '.' + product.extension + '"/> ' ,
-                                '</td>',
-                                '<td>' + product.title + '</td>',
-                                '<td>' + product.description + '</td>',
-                                '<td>' + product.price + '$</td>',
-                                '<td>',
-                                    '<a href="',
-                                    (window.location.hash.match(/#cart(\/\d+)*/) ? '#cart/' : '#'),
-                                    product.id,
-                                    '" class="button-products">',
-                                    (window.location.hash.match(/#cart(\/\d+)*/) ?
-                                        '@lang('buttons.remove')' :
-                                        '@lang('buttons.add')'),
-                                    '</a>',
-                                '<td>'
-                            ].join('');
+                            '<td> ',
+                            '<img height="100" ',
+                            'width="100" ',
+                            'src="storage/images/' + product.id + '.' + product.extension + '"/> ',
+                            '</td>',
+                            '<td>' + product.title + '</td>',
+                            '<td>' + product.description + '</td>',
+                            '<td>' + product.price + '$</td>',
+                            '<td>',
+                            '<a href="',
+                            (window.location.hash.match(/#cart(\/\d+)*/) ? '#cart/' : '#'),
+                            product.id,
+                            '" class="button-products">',
+                            (window.location.hash.match(/#cart(\/\d+)*/) ?
+                                '@lang('buttons.remove')' :
+                                '@lang('buttons.add')'),
+                            '</a>',
+                            '<td>'
+                        ].join('');
                     });
 
-                    return html;
-                }
-
-                /**
-                 * A function that render checkout form
-                 * @returns {*|string}
-                 */
-                function checkoutForm() {
-                    html = [
-                        '<form method="post" class="checkout">',
-                            '@csrf',
-                            '<span class="errors" id="cartErrorMsg"></span>',
+                    if (window.location.hash === '#cart') {
+                        htmlForm = [
                             '<input type="text" id="name" name="name"  ' +
                             'placeholder=@lang('customer.name') value="{{ old('name') }}">',
                             '<br>',
@@ -91,8 +81,42 @@
                             '<span class="errors" id="commentsErrorMsg"></span>',
                             '<br>',
                             '<input type="submit" name="checkout" value=@lang('buttons.checkout')>',
-                        '</form>'
-                    ].join('');
+                        ].join('');
+                        $('.cart .checkout').html(htmlForm);
+                        $('.checkout').on('submit', function(e){
+                            e.stopImmediatePropagation();
+                            e.preventDefault();
+
+                            let name = $('#name').val();
+                            let contacts = $('#contacts').val();
+                            let comments = $('#comments').val();
+
+                            $.ajax({
+                                type: 'post',
+                                url: '{{ route('checkout') }}',
+                                data: {
+                                    '_token': '{{ csrf_token() }}',
+                                    'name': name,
+                                    'contacts': contacts,
+                                    'comments': comments,
+                                },
+                                success: function () {
+                                    window.location.hash = "#";
+                                },
+                                error: function (response) {
+                                    var res = response.responseJSON;
+                                    console.log(res);
+                                    if (res.errors.name) {
+                                        $('#nameErrorMsg').text(res.errors.name);
+                                    } else if (res.errors.contacts) {
+                                        $('#contactsErrorMsg').text(res.errors.contacts);
+                                    } else if (res.errors.comments) {
+                                        $('#commentsErrorMsg').text(res.errors.comments);
+                                    }
+                                }
+                            });
+                        });
+                    }
                     return html;
                 }
 
@@ -110,8 +134,6 @@
                         case '#cart':
                             // Show the cart page
                             $('.cart').show();
-                            //Show the customer form with checkout details
-                            $('.checkout-details-container').html(checkoutForm());
                             // Load the cart products from the server
                             $.ajax({
                                 url: '{{ route('show.cart') }}',
@@ -168,36 +190,6 @@
                 }
 
                 window.onhashchange();
-
-                /**
-                 * Checkout
-                 */
-                 $('.checkout').submit(function (e) {
-                    e.preventDefault();
-
-                    let name = $('#name').val();
-                    let contacts = $('#contacts').val();
-                    let comments = $('#comments').val();
-
-                    $.ajax({
-                        type: 'post',
-                        url: '{{ route('checkout') }}',
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            name: name,
-                            contacts: contacts,
-                            comments: comments,
-                        },
-                        success: function () {
-                            window.location.hash = "#";
-                        },
-                        error: function (response) {
-                            $('#nameErrorMsg').text(response.responseJSON.errors.name);
-                            $('#contactsErrorMsg').text(response.responseJSON.errors.contacts);
-                            $('#commentsErrorMsg').text(response.responseJSON.errors.comments);
-                        }
-                    });
-                });
             });
         </script>
 
@@ -221,6 +213,7 @@
 
             <!-- The checkout form for the customer-->
             <div class="checkout-details-container">
+                <form class="checkout"></form>
             </div>
 
             <!-- A link to go to the index by changing the hash -->
