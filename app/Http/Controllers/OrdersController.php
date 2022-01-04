@@ -58,9 +58,15 @@ class OrdersController extends Controller
 
             Mail::to(config('mail.to.adress'))
                 ->send(new Checkout($order));
-            return response()->json(['success' => 'Successfully']);
+            if($request->expectsJson()) {
+                return response()->json(['success' => 'Successfully']);
+            }
+            return redirect()->route('index');
         } else {
-            return response()->json(['message' => 'Cart cant be empty']);
+            if($request->expectsJson()) {
+                return response()->json(['message' => 'Cart cant be empty']);
+            }
+            return redirect()->back()->withInput()->with('message','Cart cant be empty');
         }
     }
 

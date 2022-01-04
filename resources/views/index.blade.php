@@ -28,110 +28,115 @@
                  * }]
                  */
                 function renderList(products) {
-                    html = [
-                        '<tr>',
-                            '<th>Image</th>',
-                            '<th>Title</th>',
-                            '<th>Description</th>',
-                            '<th>Price</th>',
-                            '<th>Options</th>',
-                        '</tr>'
-                    ].join('');
-
+                    html = `<tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Options</th>
+                            </tr>`;
                     $.each(products, function (key, product) {
-                        html += [
-                            '<tr>',
-                            '<td> ',
-                            '<img height="100" ',
-                            'width="100" ',
-                            'src="storage/images/' + product.id + '.' + product.extension + '"/> ',
-                            '</td>',
-                            '<td>' + product.title + '</td>',
-                            '<td>' + product.description + '</td>',
-                            '<td>' + product.price + '$</td>',
-                            '<td>',
-                            '<a href="',
-                            (window.location.hash.match(/#cart(\/\d+)*/) ? '#cart/' : '#'),
-                            product.id,
-                            '" class="button-products">',
-                            (window.location.hash.match(/#cart(\/\d+)*/) ?
-                                '@lang('buttons.remove')' :
-                                '@lang('buttons.add')'),
-                            '</a>',
-                            '<td>'
-                        ].join('');
+                        html += `<tr>
+                                    <td>
+                                        <img height="100" width="100"
+                                         src="storage/images/${product.id}.${product.extension}"/>
+                                    </td>
+                                    <td> ${product.title} </td>
+                                    <td> ${product.description} </td>
+                                    <td> ${product.price} $ </td>
+                                    <td>
+                                        <a href="#${product.id}" class="button-products">@lang('buttons.add')</a>
+                                    <td>
+                                </tr>`;
                     });
-
-                    if (window.location.hash === '#cart') {
-                        htmlForm = [
-                            '<input type="text" id="name" name="name"  ' +
-                            'placeholder=@lang('customer.name') value="{{ old('name') }}">',
-                            '<br>',
-                            '<span class="errors" id="nameErrorMsg"></span>',
-                            '<br>',
-                            '<input type="email" id="contacts" name="contacts" ' +
-                            'placeholder=@lang('customer.contacts')
-                                value={{old('contacts') }} >',
-                            '<br>',
-                            '<span class="errors" id="contactsErrorMsg"></span>',
-                            '<br>',
-                            '<textarea id="comments" name="comments" rows="5" ' +
-                            'placeholder=@lang('customer.comments')>{{ old('comments') }}</textarea>',
-                            '<br>' +
-                            '<span class="errors" id="commentsErrorMsg"></span>',
-                            '<br>',
-                            '<input type="submit" name="checkout" value=@lang('buttons.checkout')>',
-                        ].join('');
-                        $('.cart .checkout').html(htmlForm);
-                        $('.checkout').on('submit', function(e){
-                            e.stopImmediatePropagation();
-                            e.preventDefault();
-
-                            let name = $('#name').val();
-                            let contacts = $('#contacts').val();
-                            let comments = $('#comments').val();
-
-                            $.ajax({
-                                type: 'post',
-                                url: '{{ route('checkout') }}',
-                                data: {
-                                    '_token': '{{ csrf_token() }}',
-                                    'name': name,
-                                    'contacts': contacts,
-                                    'comments': comments,
-                                },
-                                success: function () {
-                                    window.location.hash = "#";
-                                },
-                                error: function (response) {
-                                    var res = response.responseJSON;
-                                    console.log(res);
-                                    if (res.errors.name) {
-                                        $('#nameErrorMsg').text(res.errors.name);
-                                    } else if (res.errors.contacts) {
-                                        $('#contactsErrorMsg').text(res.errors.contacts);
-                                    } else if (res.errors.comments) {
-                                        $('#commentsErrorMsg').text(res.errors.comments);
-                                    }
-                                }
-                            });
-                        });
-                    }
                     return html;
                 }
 
+                /**
+                 * A function that takes the cart array and renders it's html and renders checkout form too
+                 * @param products
+                 * @returns {*|string}
+                 */
+                function renderCart(products) {
+                    html = `<tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Options</th>
+                            </tr>`;
+                    $.each(products, function (key, product) {
+                        html += `<tr>
+                                    <td>
+                                        <img height="100" width="100"
+                                         src="storage/images/${product.id}.${product.extension}"/>
+                                    </td>
+                                    <td> ${product.title} </td>
+                                    <td> ${product.description} </td>
+                                    <td> ${product.price} $ </td>
+                                    <td>
+                                        <a href="#cart/${product.id}" class="button-products">@lang('buttons.remove')</a>
+                                    <td>
+                                </tr>`;
+                    });
+                    htmlForm = `<input type="text" id="name" name="name"
+                                placeholder=@lang('customer.name') value={{ old('name') }}>
+                                <br>
+                                <span class="errors" id="nameErrorMsg"></span>
+                                <br>
+                                <input type="email" id="contacts" name="contacts"
+                                placeholder=@lang('customer.contacts') value={{old('contacts') }}>
+                                <br>
+                                <span class="errors" id="contactsErrorMsg"></span>
+                                <br>
+                                <textarea id="comments" name="comments" rows="5"
+                                placeholder=@lang('customer.comments')>{{ old('comments') }}</textarea>
+                                <br>
+                                <span class="errors" id="commentsErrorMsg"></span>
+                                <br>
+                                <input type="submit" name="checkout" value=@lang('buttons.checkout')>`;
+                    $('.cart .checkout').html(htmlForm);
+                    $('.checkout').on('submit', function(e){
+                        e.stopImmediatePropagation();
+                        e.preventDefault();
+                        let name = $('#name').val();
+                        let contacts = $('#contacts').val();
+                        let comments = $('#comments').val();
+                        $.ajax({
+                            type: 'post',
+                            url: '{{ route('checkout') }}',
+                            dataType: 'json',
+                            data: {
+                                '_token': '{{ csrf_token() }}',
+                                'name': name,
+                                'contacts': contacts,
+                                'comments': comments,
+                            },
+                            success: function () {
+                                window.location.hash = "#";
+                            },
+                            error: function (response) {
+                                var res = response.responseJSON;
+                                $('#nameErrorMsg').text(res.errors.name);
+                                $('#contactsErrorMsg').text(res.errors.contacts);
+                                $('#commentsErrorMsg').text(res.errors.comments);
+                            }
+                        });
+                    });
+                    return html;
+                }
                 /**
                  * URL hash change handler
                  */
                 window.onhashchange = function () {
                     // First hide all the pages
                     $('.page').hide();
-
                     switch (window.location.hash) {
                         /**
                          * Case for cart page
                          */
                         case '#cart':
+                            $('.page').hide();
                             // Show the cart page
                             $('.cart').show();
                             // Load the cart products from the server
@@ -140,7 +145,7 @@
                                 dataType: 'json',
                                 success: function (response) {
                                     // Render the products in the cart list
-                                    $('.cart .list').html(renderList(response));
+                                    $('.cart .list').html(renderCart(response));
                                 }
                             });
                             break;
@@ -174,6 +179,7 @@
                             break;
                         default:
                             // If all else fails, always default to index
+                            $('.page').hide();
                             // Show the index page
                             $('.index').show();
                             // Load the index products from the server
@@ -188,7 +194,6 @@
                             break;
                     }
                 }
-
                 window.onhashchange();
             });
         </script>
