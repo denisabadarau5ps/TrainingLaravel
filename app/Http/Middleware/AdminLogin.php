@@ -18,7 +18,8 @@ class AdminLogin
     {
         if (!$request->session()->has('admin')) {
             return redirect()->route('login');
+        } else {
+            return $next($request);
         }
-        return $next($request);
     }
 }

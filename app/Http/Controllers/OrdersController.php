@@ -72,11 +72,13 @@ class OrdersController extends Controller
 
     /**
      * List all orders
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         $orders = Order::all();
+        if($request->expectsJson()) {
+            return response()->json($orders);
+        }
         return view('orders', [
             'orders' => $orders
         ]);

@@ -41,11 +41,12 @@ class ProductController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Request $request, $id = null): \Illuminate\Http\RedirectResponse
+    public function save(Request $request)
     {
         $validatedData = $this->validateData($request);
+        $id = $request->input('id');
         $image = $request->file('fileToUpload');
-        if ($id != null) {
+        if ($id != 0) {
             $product = Product::where('id', $id)->first();
             $imagename = $product->id . '.' . $product->extension;
             if (Storage::exists($imagename)) {
@@ -63,9 +64,15 @@ class ProductController extends Controller
         $imagename = $product->id . '.' . $product->extension;
         $image->storeAs('public/images', $imagename);
         if ($id == null) {
+            if($request->expectsJson()) {
+                return response()->json(['success' => 'Product saved']);
+            }
             return redirect()->route('store')
                 ->with('status', 'Product saved');
         } else {
+            if($request->expectsJson()) {
+                return response()->json(['succes' => 'Product saved']);
+            }
             return redirect()->route('edit', ['id' => $id])
                 ->with('status', 'Product saved');
         }
