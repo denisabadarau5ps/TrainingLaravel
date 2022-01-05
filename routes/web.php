@@ -34,6 +34,6 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/product', 'App\Http\Controllers\ProductController@save')->name('store');
 
     Route::get('/orders', 'App\Http\Controllers\OrdersController@index')->name('orders');
-    Route::get('/order/{order}', 'App\Http\Controllers\OrderController@index')->name('order');
+    Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order');
 });
 

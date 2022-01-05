@@ -75,7 +75,7 @@ class OrdersController extends Controller
      */
     public function index(Request $request)
     {
-        $orders = Order::all();
+        $orders = Order::with('customer')->orderBy('created_at', 'desc')->get();
         if($request->expectsJson()) {
             return response()->json($orders);
         }

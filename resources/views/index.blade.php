@@ -5,6 +5,14 @@
         <!-- Load the jQuery JS library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+        <script type="text/javascript" rel="javascript" src="{{ asset('js/index.js') }}"></script>
+        <script type="text/javascript" rel="javascript" src="{{ asset('js/cart.js') }}"></script>
+        <script type="text/javascript" rel="javascript" src="{{ asset('js/login.js') }}"></script>
+        <script type="text/javascript" rel="javascript" src="{{ asset('js/products.js') }}"></script>
+        <script type="text/javascript" rel="javascript" src="{{ asset('js/product.js') }}"></script>
+        <script type="text/javascript" rel="javascript" src="{{ asset('js/orders.js') }}"></script>
+        <script type="text/javascript" rel="javascript" src="{{ asset('js/order.js') }}"></script>
+
         <!-- Custom JS script -->
         <script type="text/javascript">
             $(document).ready(function () {
@@ -13,7 +21,6 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-
                 /**
                  * Submit checkout form
                  */
@@ -84,7 +91,7 @@
                 });
 
                 /**
-                 * Submit add product form
+                 * Submit add/edit product form
                  */
                 $('.product-form').on('submit', function(e){
                     e.preventDefault();
@@ -131,169 +138,6 @@
                         },
                     });
                 });
-
-                /**
-                 * A function that takes a products array and renders it's html
-                 *
-                 * The products array must be in the form of
-                 * [{
-                 *     "title": "Product 1 title",
-                 *     "description": "Product 1 desc",
-                 *     "price": 1
-                 * },{
-                 *     "title": "Product 2 title",
-                 *     "description": "Product 2 desc",
-                 *     "price": 2
-                 * }]
-                 */
-                function renderList(products) {
-                    html = `<tr>
-                                <th>Image</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Options</th>
-                            </tr>`;
-                    $.each(products, function (key, product) {
-                        html += `<tr>
-                                    <td>
-                                        <img height="100" width="100"
-                                         src="storage/images/${product.id}.${product.extension}"/>
-                                    </td>
-                                    <td> ${product.title} </td>
-                                    <td> ${product.description} </td>
-                                    <td> ${product.price} $ </td>
-                                    <td>
-                                        <a href="#${product.id}" class="button-products">@lang('buttons.add')</a>
-                                    <td>
-                                </tr>`;
-                    });
-                    return html;
-                }
-
-                /**
-                 * A function that takes the cart array and renders it's html and renders checkout form too
-                 * @param products
-                 * @returns {*|string}
-                 */
-                function renderCart(products) {
-                    html = `<tr>
-                                <th>Image</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Options</th>
-                            </tr>`;
-                    $.each(products, function (key, product) {
-                        html += `<tr>
-                                    <td>
-                                        <img height="100" width="100"
-                                         src="storage/images/${product.id}.${product.extension}"/>
-                                    </td>
-                                    <td> ${product.title} </td>
-                                    <td> ${product.description} </td>
-                                    <td> ${product.price} $ </td>
-                                    <td>
-                                        <a href="#cart/${product.id}" class="button-products">@lang('buttons.remove')</a>
-                                    <td>
-                                </tr>`;
-                    });
-                    htmlForm = `<input type="text" id="name" name="name"
-                                placeholder=@lang('customer.name') value={{ old('name') }}>
-                                <br>
-                                <span class="errors" id="nameErrorMsg"></span>
-                                <br>
-                                <input type="email" id="contacts" name="contacts"
-                                placeholder=@lang('customer.contacts') value={{old('contacts') }}>
-                                <br>
-                                <span class="errors" id="contactsErrorMsg"></span>
-                                <br>
-                                <textarea id="comments" name="comments" rows="5"
-                                placeholder=@lang('customer.comments')>{{ old('comments') }}</textarea>
-                                <br>
-                                <span class="errors" id="commentsErrorMsg"></span>
-                                <br>
-                                <input type="submit" name="checkout" value=@lang('buttons.checkout')>`;
-                    $('.cart .checkout').html(htmlForm);
-                    return html;
-                }
-
-                /**
-                 * A function that render login form for admin
-                 * @returns {string}
-                 */
-                function login() {
-                    html = `<h1>@lang('login.login')</h1>
-                            <label for="username">@lang('login.username') </label>
-                            <input type="text" id="username" name="username" value={{ old('username') }}>
-                            <br>
-                            <span class="errors" id="usernameErrorMsg"></span>
-                            <br>
-                            <label for="password">@lang('login.password') </label>
-                            <input type="password" name="password" id="password">
-                            <br>
-                            <span class="errors" id="passwordErrorMsg"></span>
-                            <br>
-                            <input type="submit" name="login" value=@lang('buttons.login')>`;
-                    return html;
-                }
-
-                /**
-                 * A function that render all products from products table
-                 * @param products
-                 * @returns {string}
-                 */
-                function renderProducts(products) {
-                    html = `<tr>
-                                <th>Image</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Options</th>
-                            </tr>`;
-                    $.each(products, function (key, product) {
-                        html += `<tr>
-                                    <td>
-                                        <img height="100" width="100"
-                                         src="storage/images/${product.id}.${product.extension}"/>
-                                    </td>
-                                    <td> ${product.title} </td>
-                                    <td> ${product.description} </td>
-                                    <td> ${product.price} $ </td>
-                                    <td>
-                                        <a href="#products/${product.id}" class="button-products">@lang('buttons.delete')</a>
-                                        <a href="#product/${product.id}" class="button-products">@lang('buttons.edit')</a>
-                                    <td>
-                                </tr>`;
-                    });
-                    return html;
-                }
-
-                /**
-                 * A function that render edit/add product form
-                 * @returns {string}
-                 */
-                function renderProductForm() {
-                    html = `<h1>@lang('general.product')</h1>
-                            <input type="text" id="title" placeholder=@lang('product.title') value={{ old('title') }}>
-                            <br>
-                            <span class="errors" id="titleErrorMsg"></span>
-                            <br>
-                            <textarea id="description" placeholder=@lang('product.desc')>{{ old('description') }}</textarea>
-                            <br>
-                            <span class="errors" id="descErrorMsg"></span>
-                            <br>
-                            <input type="number" id="price" placeholder=@lang('product.price') value={{ old('price') }}>
-                            <br>
-                            <span class="errors" id="priceErrorMsg"></span>
-                            <br>
-                            <input type="file" id="fileToUpload" style="margin-left: 20%;">
-                            <br>
-                            <span class="errors" id="fileErrorMsg"></span>
-                            <br>
-                            <input type="submit" name="save" value="@lang('buttons.save')"> <br><br>`;
-                    return html;
-                }
 
                 /**
                  * URL hash change handler
@@ -359,6 +203,9 @@
                                 }
                             });
                             break;
+                        /**
+                         * Logout case
+                         */
                         case '#logout':
                             $('.page').hide();
                             $.ajax({
@@ -371,7 +218,7 @@
                                 }
                             });
                         /**
-                         * Case for all products
+                         * Case for products page
                          */
                         case '#products':
                             $('.page').hide();
@@ -398,6 +245,9 @@
                                 success: function (response) {
                                     window.location.hash = "#products";
                                 },
+                                error: function() {
+                                    window.location.hash = '#login';
+                                }
                             });
                             break;
                         /**
@@ -415,6 +265,44 @@
                             $('.page').hide();
                             $('.product').show();
                             $('.product .product-form').html(renderProductForm());
+                            break;
+                        /**
+                         * Case for all orders
+                         */
+                        case '#orders':
+                            // Hide all pages
+                            $('.page').hide();
+                            // Show the orders page
+                            $('.orders').show();
+                            // Load the orders form the server
+                            $.ajax({
+                                url: '{{ route('orders') }}',
+                                dataType: 'json',
+                                success: function (response) {
+                                    // Render the orders in the orders list
+                                    $('.orders .list').html(renderOrders(response));
+                                }
+                            });
+                            break;
+                        /**
+                         * Case for an order
+                         */
+                        case (window.location.hash.match(/#order\/\d+/) || {}).input:
+                            // Hide all pages
+                            $('.page').hide();
+                            // Show the orders page
+                            $('.order').show();
+                            // Load the order form the server
+                            let id =  window.location.hash.split('/')[1];
+                            $.ajax({
+                                url: '{{ route('order') }}',
+                                data: {'id': id},
+                                dataType: 'json',
+                                success: function (response) {
+                                    // Render the orders in the orders list
+                                    $('.order .order-container').html(renderOrder(response));
+                                }
+                            });
                             break;
                         default:
                             // If all else fails, always default to index
@@ -492,6 +380,17 @@
                 <form class="product-form"></form>
                 <a href="#products" class="button-products">@lang('buttons.products')</a>
             </div>
+        </div>
+
+        <!-- The orders page -->
+        <div class="page orders">
+            <!-- The index element where the products list is rendered -->
+            <table class="list"></table>
+        </div>
+
+        <!-- The single order page -->
+        <div class="page order">
+            <div class="order-container"></div>
         </div>
     </body>
 </html>
