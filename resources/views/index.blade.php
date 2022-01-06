@@ -24,7 +24,7 @@
                 /**
                  * Submit checkout form
                  */
-                $('.checkout').on('submit', function(e){
+                $('.checkout').on('submit', function (e) {
                     e.preventDefault();
 
                     let name = $('#name').val();
@@ -45,10 +45,16 @@
                             window.location.hash = "#";
                         },
                         error: function (response) {
-                            var res = response.responseJSON;
-                            $('#nameErrorMsg').text(res.errors.name);
-                            $('#contactsErrorMsg').text(res.errors.contacts);
-                            $('#commentsErrorMsg').text(res.errors.comments);
+                            var res = response.responseJSON.errors;
+                            if (res.name) {
+                                $('#nameErrorMsg').text(res.name);
+                            }
+                            if (res.contacts) {
+                                $('#contactsErrorMsg').text(res.contacts);
+                            }
+                            if (res.comments) {
+                                $('#commentsErrorMsg').text(res.comments);
+                            }
                         }
                     });
                 });
@@ -56,34 +62,30 @@
                 /**
                  * Submit login form
                  */
-                $('.login-form').on('submit', function(e){
+                $('.login-form').on('submit', function (e) {
                     e.preventDefault();
 
                     let username = $('#username').val();
                     let password = $('#password').val();
 
-                    console.log(username);
-                    console.log(password);
-
                     $.ajax({
                         type: 'post',
                         url: '{{ route('login') }}',
                         data: {
-                            '_token' : '{{ csrf_token() }}',
-                            'username' : username,
-                            'password' : password,
+                            '_token': '{{ csrf_token() }}',
+                            'username': username,
+                            'password': password,
                         },
                         dataType: 'json',
-                        success: function(response) {
-                            console.log(response.success);
+                        success: function (response) {
                             window.location.hash = '#products';
                         },
-                        error: function(response){
+                        error: function (response) {
                             var res = response.responseJSON.errors;
-                            if(res.username) {
+                            if (res.username) {
                                 $('#usernameErrorMsg').text(res.username);
                             }
-                            if(res.password) {
+                            if (res.password) {
                                 $('#passwordErrorMsg').text(res.password);
                             }
                         }
@@ -93,7 +95,7 @@
                 /**
                  * Submit add/edit product form
                  */
-                $('.product-form').on('submit', function(e){
+                $('.product-form').on('submit', function (e) {
                     e.preventDefault();
 
                     let title = $('#title').val();
@@ -117,22 +119,21 @@
                         enctype: 'multipart/form-data',
                         data: myForm,
                         dataType: 'json',
-                        success: function() {
+                        success: function () {
                             window.location.hash = '#products';
                         },
-                        error: function(response){
+                        error: function (response) {
                             var res = response.responseJSON.errors;
-                            console.log(res);
-                            if(res.title) {
+                            if (res.title) {
                                 $('#titleErrorMsg').text(res.title);
                             }
-                            if(res.description) {
+                            if (res.description) {
                                 $('#descErrorMsg').text(res.description);
                             }
-                            if(res.price) {
+                            if (res.price) {
                                 $('#priceErrorMsg').text(res.price);
                             }
-                            if(res.fileToUpload) {
+                            if (res.fileToUpload) {
                                 $('#fileErrorMsg').text(res.fileToUpload);
                             }
                         },
@@ -167,6 +168,9 @@
                          * Case for removing products from cart
                          */
                         case (window.location.hash.match(/#cart\/\d+/) || {}).input:
+                            $('.page').hide();
+                            // Show the cart page
+                            $('.cart').show();
                             $.ajax({
                                 type: 'post',
                                 url: '{{ route('remove.from.cart') }}',
@@ -181,6 +185,9 @@
                          * Case for adding products to cart
                          */
                         case (window.location.hash.match(/#\d+/) || {}).input:
+                            $('.page').hide();
+                            // Show the cart page
+                            $('.index').show();
                             $.ajax({
                                 type: 'post',
                                 url: '{{ route('add.to.cart') }}',
@@ -198,7 +205,7 @@
                             $('.page').hide();
                             $('.login').show();
                             $.ajax('{{ route('login.show') }}', {
-                                success: function() {
+                                success: function () {
                                     $('.login .login-form').html(login());
                                 }
                             });
@@ -212,8 +219,7 @@
                                 url: '{{route('logout')}}',
                                 type: 'post',
                                 dataType: 'json',
-                                success: function (response) {
-                                    console.log(response.success);
+                                success: function () {
                                     window.location.hash = '#';
                                 }
                             });
@@ -230,6 +236,9 @@
                                 success: function (response) {
                                     // Render the products in the index list
                                     $('.products .list').html(renderProducts(response));
+                                },
+                                error: function () {
+                                    window.location.hash = '#login';
                                 }
                             });
                             break;
@@ -237,6 +246,8 @@
                          * Case for removing products
                          */
                         case (window.location.hash.match(/#products\/\d+/) || {}).input:
+                            $('.page').hide();
+                            $('.products').show();
                             $.ajax({
                                 type: 'post',
                                 url: '{{ route('remove.product') }}',
@@ -245,7 +256,7 @@
                                 success: function (response) {
                                     window.location.hash = "#products";
                                 },
-                                error: function() {
+                                error: function () {
                                     window.location.hash = '#login';
                                 }
                             });
@@ -256,7 +267,18 @@
                         case '#product':
                             $('.page').hide();
                             $('.product').show();
-                            $('.product .product-form').html(renderProductForm());
+                            $.ajax({
+                                type: 'get',
+                                url: '{{ route('show.product.form') }}',
+                                data: {'id': 0},
+                                dataType: 'json',
+                                success: function () {
+                                    $('.product .product-form').html(renderProductForm());
+                                },
+                                error: function () {
+                                    window.location.hash = '#login';
+                                }
+                            });
                             break;
                         /**
                          * Case for product form-edit
@@ -264,7 +286,18 @@
                         case (window.location.hash.match(/#product\/\d+/) || {}).input:
                             $('.page').hide();
                             $('.product').show();
-                            $('.product .product-form').html(renderProductForm());
+                            $.ajax({
+                                type: 'get',
+                                url: '{{ route('show.product.form') }}',
+                                data: {'id': window.location.hash.split('/')[1]},
+                                dataType: 'json',
+                                success: function () {
+                                    $('.product .product-form').html(renderProductForm());
+                                },
+                                error: function () {
+                                    window.location.hash = '#login';
+                                }
+                            });
                             break;
                         /**
                          * Case for all orders
@@ -281,6 +314,9 @@
                                 success: function (response) {
                                     // Render the orders in the orders list
                                     $('.orders .list').html(renderOrders(response));
+                                },
+                                error: function () {
+                                    window.location.hash = '#login';
                                 }
                             });
                             break;
@@ -293,7 +329,7 @@
                             // Show the orders page
                             $('.order').show();
                             // Load the order form the server
-                            let id =  window.location.hash.split('/')[1];
+                            let id = window.location.hash.split('/')[1];
                             $.ajax({
                                 url: '{{ route('order') }}',
                                 data: {'id': id},
@@ -301,6 +337,9 @@
                                 success: function (response) {
                                     // Render the orders in the orders list
                                     $('.order .order-container').html(renderOrder(response));
+                                },
+                                error: function () {
+                                    window.location.replace('#login');
                                 }
                             });
                             break;

@@ -9,11 +9,10 @@ class AdminController extends Controller
 {
     /**
      * Show login form
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index(Request $request)
     {
-        session()->pull('admin');
+        $request->session()->pull('admin');
         if($request->expectsJson()) {
             return response()->json(['success' => 'Success']);
         }

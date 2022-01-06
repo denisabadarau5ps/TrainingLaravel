@@ -32,8 +32,8 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/products', 'App\Http\Controllers\ProductsController@index')->name('products');
     Route::post('/products', 'App\Http\Controllers\ProductsController@remove')->name('remove.product');
     Route::post('/product', 'App\Http\Controllers\ProductController@save')->name('store');
+    Route::get('/product', 'App\Http\Controllers\ProductController@index')->name('show.product.form');
 
     Route::get('/orders', 'App\Http\Controllers\OrdersController@index')->name('orders');
     Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order');
 });
-

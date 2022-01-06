@@ -1,3 +1,8 @@
+/**
+ * A function that render order details
+ * @param order
+ * @returns {string}
+ */
 function renderOrder(order) {
     let html = `<h1>Order #${ order.id } </h1>
                 <h3>Created at: ${ order.created_at }</h3>`;

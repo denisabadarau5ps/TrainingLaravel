@@ -11,14 +11,17 @@ class ProductController extends Controller
 {
     /**
      * Show store/edit form for a product
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index($id = null)
+    public function index(Request $request)
     {
-        return Product::where('id', $id)
-            ->exists() || $id == null
-            ? view('product-form', ['id' => $id])
-            : abort(404);
+        $id = $request->input('id');
+        if(Product::where('id', $id)->exists() || $id == 0) {
+            if($request->expectsJson()) {
+                return response()->json(['success' => 'Success']);
+            } else {
+                view('product-form', ['id' => $id]);
+            }
+        }
     }
 
     /**
