@@ -9,8 +9,9 @@ return [
     | The following language lines are used for products
     |
     */
-    'image' => 'Product Image',
+    'image' => 'Image',
     'title' => 'Title',
     'desc' => 'Description',
     'price' => 'Price',
+    'options' => 'Options',
 ];

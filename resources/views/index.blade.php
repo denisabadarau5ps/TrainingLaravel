@@ -12,6 +12,12 @@
         <script type="text/javascript" rel="javascript" src="{{ asset('js/product.js') }}"></script>
         <script type="text/javascript" rel="javascript" src="{{ asset('js/orders.js') }}"></script>
         <script type="text/javascript" rel="javascript" src="{{ asset('js/order.js') }}"></script>
+        <script type="text/javascript" rel="javascript" src="{{ asset('js/translation.js') }}"></script>
+        <script type="text/javascript" rel="javascript" src="{{ asset('js/table.js') }}"></script>
+
+        <script>
+            var translations = {!! Cache::get('translations') !!};
+        </script>
 
         <!-- Custom JS script -->
         <script type="text/javascript">

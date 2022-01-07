@@ -3,16 +3,16 @@
  * @returns {string}
  */
 function renderProductForm() {
-    let html = `<h1>@lang('general.product')</h1>
-                <input type="text" id="title" placeholder="trans('product.title')" >
+    let html = `<h1>${trans('general.product')}</h1>
+                <input type="text" id="title" placeholder=${trans('product.title')} >
                 <br>
                 <span class="errors" id="titleErrorMsg"></span>
                 <br>
-                <textarea id="description" placeholder="trans('product.desc')"></textarea>
+                <textarea id="description" placeholder=${trans('product.desc')}></textarea>
                 <br>
                 <span class="errors" id="descErrorMsg"></span>
                 <br>
-                <input type="number" id="price" placeholder="trans('product.price')">
+                <input type="number" id="price" placeholder=${trans('product.price')}>
                 <br>
                 <span class="errors" id="priceErrorMsg"></span>
                 <br>
@@ -20,6 +20,6 @@ function renderProductForm() {
                 <br>
                 <span class="errors" id="fileErrorMsg"></span>
                 <br>
-                <input type="submit" name="save" value="trans('buttons.save')"> <br><br>`;
+                <input type="submit" name="save" value=${trans('buttons.save')}> <br><br>`;
     return html;
 }

@@ -17,7 +17,8 @@ function renderOrder(order) {
         html += `<tr>
                      <td>
                          <img height="100" width="100"
-                         src="storage/images/${product.id}.${product.extension}"/>
+                         src="storage/images/${product.id}.${product.extension}"
+                         alt=${trans('product.image')}/>
                      </td>
                      <td> ${ product.title }</td>
                      <td> ${ product.description }</td>
@@ -27,6 +28,6 @@ function renderOrder(order) {
     html += `</table>`;
     html += `<br>
              <h2>Total: ${ order.total}$</h2>
-             <a href="#orders" class="button-products">trans('buttons.orders')</a>`;
+             <a href="#orders" class="button-products">${trans('buttons.orders')}</a>`;
     return html;
 }

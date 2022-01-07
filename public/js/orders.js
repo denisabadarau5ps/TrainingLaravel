@@ -5,11 +5,11 @@
  */
 function renderOrders(orders) {
     let html = `<tr>
-                    <th>trans('orders.no')</th>
-                    <th>trans('orders.name')</th>
-                    <th>trans('orders.contact')</th>
-                    <th>trans('orders.comments')</th>
-                    <th>trans('orders.price')</th>
+                    <th>${trans('orders.no')}</th>
+                    <th>${trans('orders.name')}</th>
+                    <th>${trans('orders.contact')}</th>
+                    <th>${trans('orders.comments')}</th>
+                    <th>${trans('orders.price')}</th>
                 </tr>`;
     $.each(orders, function (key, order) {
         html += ` <tr>

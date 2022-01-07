@@ -13,26 +13,14 @@
  * }]
  */
 function renderList(products) {
-    let html = `<tr>
-                    <th>Image</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Options</th>
-                </tr>`;
+    let html = renderHeader();
+
     $.each(products, function (key, product) {
-        html += `<tr>
-                     <td>
-                         <img height="100" width="100"
-                         src="storage/images/${product.id}.${product.extension}"/>
-                     </td>
-                     <td> ${product.title} </td>
-                     <td> ${product.description} </td>
-                     <td> ${product.price} $ </td>
-                     <td>
-                         <a href="#${product.id}" class="button-products">trans('buttons.add')</a>
-                     <td>
-                 </tr>`;
+        html += renderProductsDetails(product);
+        html += ` <td>
+                      <a href="#${product.id}" class="button-products">${trans('buttons.add')}</a>
+                   <td>
+              </tr>`;
     });
     return html;
 }
