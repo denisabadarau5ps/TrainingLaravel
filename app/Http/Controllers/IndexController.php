@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -15,10 +16,11 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         $cart = $request->session()->get('cart', []);
-        $products = Product::whereNotIn('id', $cart)->get();
+        /** @var Builder $products */
+        $products = Product::whereNotIn('id', $cart);
         if ($request->expectsJson()) {
-            return response()->json($products);
+            return response()->json($products->paginate($request->query('pageSize', 5)));
         }
-        return view('index', ['products' => $products]);
+        return view('index', ['products' => $products->get()]);
     }
 }

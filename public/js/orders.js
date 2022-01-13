@@ -3,6 +3,7 @@
  * @param orders
  * @returns {string}
  */
+
 function renderOrders(orders) {
     let html = `<tr>
                     <th>${trans('orders.no')}</th>
@@ -16,10 +17,10 @@ function renderOrders(orders) {
                       <td>
                           <a href="#order/${order.id}">${order.id}</a>
                       </td>
-                      <td> ${order.customer.name} </td>
-                      <td> ${order.customer.contacts} </td>
-                      <td> ${order.customer.comments} </td>
-                      <td> ${order.total} $ </td>
+                      <td> ${escapeHtml(order.customer.name)} </td>
+                      <td> ${escapeHtml(order.customer.contacts)} </td>
+                      <td> ${escapeHtml(order.customer.comments)} </td>
+                      <td> ${escapeHtml(order.total)} $ </td>
                   </tr>`;
     });
     return html;

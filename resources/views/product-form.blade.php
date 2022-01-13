@@ -8,7 +8,7 @@
         @endif
         <form method="post"action="{{ $id == null ? route('store', ['id' => null]) : route('edit', ['id' => $id])  }}" enctype="multipart/form-data">
             @csrf
-            <input type="text" name="title" placeholder=@lang('product.title') value="{{ old('title') }}">
+            <input type="text" name="title" placeholder=@lang('product.title') value="{{ old('title') || $product->title }}">
             <br>
             @error('title')
                 <p class="error-message">{{ $message }}</p>

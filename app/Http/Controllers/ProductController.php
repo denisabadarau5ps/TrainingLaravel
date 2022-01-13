@@ -14,12 +14,13 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $id = $request->input('id');
-        if(Product::where('id', $id)->exists() || $id == 0) {
+        $id = $request->query('id');
+        $product = Product::where('id', $id)->first();
+        if($product && $product->exists() || $id == 0) {
             if($request->expectsJson()) {
-                return response()->json(['success' => 'Success']);
+                return response()->json($product);
             } else {
-                view('product-form', ['id' => $id]);
+                view('product-form', ['id' => $id, 'product' => $product]);
             }
         }
     }
