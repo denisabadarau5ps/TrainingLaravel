@@ -36,6 +36,3 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/orders', 'App\Http\Controllers\OrdersController@index')->name('orders');
     Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order');
 });
-
-Route::get('pagination', 'App\Http\Controllers\Test@index');
-Route::get('get_ajax_data', 'App\Http\Controllers\Test@get_ajax_data');
