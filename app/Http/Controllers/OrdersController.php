@@ -76,10 +76,13 @@ class OrdersController extends Controller
     public function index(Request $request)
     {
         $orders = Order::with('customer')->orderBy('created_at', 'desc')->get();
-        if($request->expectsJson()) {
+        /*if($request->expectsJson()) {
             return response()->json($orders);
         }
         return view('orders', [
+            'orders' => $orders
+        ]);*/
+        return response()->json([
             'orders' => $orders
         ]);
     }

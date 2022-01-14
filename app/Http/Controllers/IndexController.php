@@ -11,16 +11,16 @@ class IndexController extends Controller
     /**
      * Show all products that are not in cart
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index(Request $request)
     {
         $cart = $request->session()->get('cart', []);
         /** @var Builder $products */
-        $products = Product::whereNotIn('id', $cart);
-        if ($request->expectsJson()) {
-            return response()->json($products->paginate($request->query('pageSize', 5)));
-        }
-        return view('index', ['products' => $products->get()]);
+        $products = Product::whereNotIn('id', $cart)->get();
+        /*if ($request->expectsJson()) {
+            return response()->json(['products' => $products]);
+        }*/
+        return response()->json(['products' => $products]);
+        //return view('index', ['products' => $products->get()]);
     }
 }

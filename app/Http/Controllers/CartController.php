@@ -26,7 +26,6 @@ class CartController extends Controller
     /**
      * Add products in cart
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -36,17 +35,13 @@ class CartController extends Controller
                 $request->session()->put('cart', []);
             }
             $request->session()->push('cart', $id);
-            if($request->expectsJson()) {
-                return response()->json(['success' => 'Product added']);
-            }
-            return redirect()->route('index');
         }
     }
 
     /**
      * Remove products from cart
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|void
      */
     public function remove(Request $request)
     {

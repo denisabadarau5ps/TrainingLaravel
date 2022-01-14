@@ -16,10 +16,11 @@ class ProductsController extends Controller
     public function index(Request $request)
     {
         $products = Product::all();
-        if($request->expectsJson()) {
+        /*if($request->expectsJson()) {
             return response()->json($products);
         }
-        return view('products', ['products' => $products]);
+        return view('products', ['products' => $products]);*/
+        return response()->json(['products' => $products]);
     }
 
     /**
