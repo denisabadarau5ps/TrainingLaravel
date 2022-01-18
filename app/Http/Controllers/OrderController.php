@@ -11,19 +11,17 @@ class OrderController extends Controller
      * Order details after checkout
      * @param $order
      */
-    public function index(Request $request)
+    public function index($id)
     {
-        if (Order::where('id', $request->input('id'))->exists()) {
-            $id = $request->input('id');
+        if (Order::where('id', $id)->exists()) {
             $order = Order::with('products')->where('id', $id)->first();
-            if($request->expectsJson()) {
+            /*if($request->expectsJson()) {
                 return response()->json($order);
             }
             return view('order', [
                 'order' => $order,
-            ]);
-        } else {
-            abort(404);
+            ]);*/
+            return response()->json(['order' => $order]);
         }
     }
 }

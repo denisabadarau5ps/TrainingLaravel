@@ -17,10 +17,11 @@ class CartController extends Controller
     {
         $cart = $request->session()->get('cart', []);
         $products = Product::whereIn('id', $cart)->get();
-        if ($request->expectsJson()) {
+        /*if ($request->expectsJson()) {
             return response()->json($products);
         }
-        return view('cart', ['products' => $products]);
+        return view('cart', ['products' => $products]);*/
+        return response()->json(['products' => $products]);
     }
 
     /**
@@ -54,10 +55,10 @@ class CartController extends Controller
             foreach ($products as $key => $value) {
                 $request->session()->push('cart', $value);
             }
-            if($request->expectsJson()) {
+            /*if($request->expectsJson()) {
                 return response()->json(['success' => 'Product removed']);
             }
-            return redirect()->route('show.cart');
+            return redirect()->route('show.cart');*/
         }
     }
 }

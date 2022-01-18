@@ -35,9 +35,10 @@ const router = new VueRouter({
             component: Products
         },
         {
-            path: '/product',
+            path: '/product/:id/edit',
+            alias: '/product/:id',
             name: 'product',
-            component: Product
+            component: Product,
         },
         {
             path: '/orders',
@@ -45,7 +46,7 @@ const router = new VueRouter({
             component: Orders
         },
         {
-            path: '/order',
+            path: '/order/:id',
             name: 'order',
             component: Order
         },

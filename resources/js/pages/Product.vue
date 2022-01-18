@@ -1,13 +1,96 @@
 <template>
-    <h1>Product</h1>
+    <div class="product-container">
+        <h1>Product Form</h1>
+        <form
+            method="post"
+            @submit.prevent="submit"
+        >
+            <input
+                v-model="title"
+                type="text"
+                id="title"
+                placeholder="Title"
+                value="{{ product.title }}"
+            >
+            <br>
+            <span class="errors"> {{ errorTitle }} </span>
+            <br>
+            <textarea
+                v-model="description"
+                id="description"
+                placeholder="Description"
+            >
+                {{ product.description }}
+            </textarea>
+            <br>
+            <span class="errors"> {{ errorDescription}} </span>
+            <br>
+            <input
+                v-model="price"
+                type="number"
+                id="price"
+                placeholder="Price"
+                value="{{ product.price }}"
+            >
+            <br>
+            <span class="errors">{{ errorPrice}}</span>
+            <br>
+            <input type="file" id="file" style="margin-left: 20%;">
+            <br>
+            <span class="errors">{{ errorFile}}</span>
+            <br>
+            <input
+                type="submit"
+                value="Save"
+            >
+            <br><br>
+        </form>
+    </div>
 </template>
 
 <script>
 export default {
-    name: "Product"
+    name: "Product",
+    data() {
+        return {
+            product: [],
+            title: '',
+            description: '',
+            price: '',
+            file: '',
+            errorTitle: '',
+            errorDescription: '',
+            errorPrice: '',
+            errorFile: '',
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        }
+    },
+    mounted() {
+        var id = this.$route.path.split('/')[2];
+        if (id != 0) {
+            this.editProduct(id);
+        }
+    },
+    methods: {
+        editProduct(id) {
+            console.log(id);
+        },
+        submit() {
+            console.log('submit');
+        }
+    },
 }
 </script>
 
 <style scoped>
-
+    .product-container{
+        margin: auto;
+        width: 20%;
+        border: 3px solid black;
+        padding: 30px;
+        text-align: center;
+    }
+    .errors{
+        color:red;
+    }
 </style>

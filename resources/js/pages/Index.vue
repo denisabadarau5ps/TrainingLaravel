@@ -14,16 +14,17 @@
                 </td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.description }}</td>
-                <td>{{ product.price }}</td>
+                <td>{{ product.price }}$</td>
                 <td>
                     <button @click="addToCart(product.id)">Add</button>
                 </td>
             </tr>
         </table>
-        <br>
-        <router-link to="/">
-            <button>test</button>
-        </router-link>
+        <div class="button-container">
+            <router-link to="/cart">
+                <button class="btn">Go to cart</button>
+            </router-link>
+        </div>
     </div>
 </template>
 
@@ -40,9 +41,10 @@ export default {
     },
     methods: {
         getProducts() {
-            axios.get('api/index').then(response => {
-                this.products = response.data.products;
-            });
+            axios.get('api/index')
+                .then(response => {
+                    this.products = response.data.products;
+                });
         },
         getImage(product) {
             return 'storage/images/' + product.id + '.' + product.extension;
@@ -52,11 +54,10 @@ export default {
                 'api/index/',
                 { id })
                 .then(() => {this.getProducts()});
-        }
+        },
     }
 }
 </script>
-
 <style scoped>
     table{
         width: 100%;
@@ -80,6 +81,16 @@ export default {
         color: #333333;
         padding: 2px 6px 2px 6px;
         border: 1px solid black;
-        margin-top: 10%;
+    }
+    .button-container {
+        width: 90%;
+        position: relative;
+        margin: 20px;
+    }
+    .btn{
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
     }
 </style>

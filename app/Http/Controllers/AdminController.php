@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -25,17 +26,16 @@ class AdminController extends Controller
      */
     public function login(Request $request)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required'
         ]);
-        if ($validatedData['username'] == config('admin.username')
-            && $validatedData['password'] == config('admin.password')) {
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        if ($request->input('username') == config('admin.username')
+            && $request->input('password') == config('admin.password')) {
             $request->session()->push('admin', true);
-            if($request->expectsJson()) {
-                return response()->json(['success' => 'Success']);
-            }
-            return redirect()->route('products');
         }
     }
 

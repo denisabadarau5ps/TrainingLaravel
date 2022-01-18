@@ -39,10 +39,10 @@ class ProductsController extends Controller
                 Storage::delete($imagename);
             }
             $product->delete();
-            if($request->expectsJson()) {
+            /*if($request->expectsJson()) {
                 return response()->json(['success' => 'Product deleted successfully']);
             }
-            return redirect()->route('products');
+            return redirect()->route('products');*/
         }
     }
 }

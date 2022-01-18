@@ -9,7 +9,9 @@
         </tr>
         <tr v-for="order in orders" :key="order.id">
             <td>
-                <a href="/">{{order.id}}</a>
+                <router-link :to="linkOrder(order.id)">
+                    {{ order.id }}
+                </router-link>
             </td>
             <td> {{order.customer.name}} </td>
             <td> {{order.customer.contacts}} </td>
@@ -28,44 +30,31 @@ export default {
         }
     },
     mounted() {
-        this.getProducts();
+        this.getOrders();
     },
     methods: {
-        getProducts() {
+        getOrders() {
             axios.get('api/orders').then(response => {
                 this.orders = response.data.orders;
             });
         },
-        getImage(product) {
-            return 'storage/images/' + product.id + '.' + product.extension;
+        linkOrder(id) {
+            return '/order/' + id
         },
     }
 }
 </script>
 
 <style scoped>
-table{
-    width: 100%;
-    text-align: center;
-}
-th{
-    font-size: 30px;
-}
-th,td{
-    padding: 20px;
-    width: 20%;
-}
-img{
-    height: 100px;
-    width: 100px;
-}
-button {
-    font: bold 15px Arial;
-    background-color: #EEEEEE;
-    text-decoration: none;
-    color: #333333;
-    padding: 2px 6px 2px 6px;
-    border: 1px solid black;
-    margin-top: 10%;
-}
+    table{
+        width: 100%;
+        text-align: center;
+    }
+    th{
+        font-size: 30px;
+    }
+    th,td{
+        padding: 20px;
+        width: 20%;
+    }
 </style>
