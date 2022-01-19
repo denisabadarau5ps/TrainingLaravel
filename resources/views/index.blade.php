@@ -1,21 +1,22 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="csrf-token" content="{{csrf_token()}}">
-        <title> @lang('general.title')</title>
+@extends('layout')
 
-        <link rel="stylesheet" href="/css/app.css">
-
-    </head>
-    <body>
-
-        <div id="app"></div>
-
-        <script src="{{url('js')}}/jquery-3.2.1.min.js"></script>
-        <script src="{{url('js')}}/bootstrap.min.js"></script>
-        <script src="{{ asset('js/app.js') }}"></script>
-        <script>window.Laravel = {csrfToken: '{{ csrf_token() }}'}</script>
-    </body>
-</html>
+@section ('content')
+    <h1>@lang('general.title')</h1>
+    @foreach($products as $product)
+        <form method="post" action="{{ route('add.to.cart') }}">
+            @csrf
+            <input type="hidden" id="id" name="id" value="{{ $product->id }}">
+            <div class="product-container">
+                @include('product')
+                <button type="submit" value="add">@lang('buttons.add')</button>
+            </div>
+        </form>
+        <?php endforeach; ?>
+        <div class="button-container">
+            <div class="button-submit">
+                <a href="/cart">
+                    <button> @lang('buttons.cart')</button>
+                </a>
+            </div>
+        </div>
+@endsection

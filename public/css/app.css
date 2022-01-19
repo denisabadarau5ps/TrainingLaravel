@@ -11286,3 +11286,202 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.product-container {
+    text-align: center;
+    border: 1px solid lightgrey;
+    width: 15%;
+    padding: 10px;
+    margin: 5px;
+}
+
+.product-image {
+    width: 50%;
+    height: auto;
+}
+
+.product-desc {
+    text-align: center;
+}
+
+.button-container {
+    width: 90%;
+    position: relative;
+    margin: 20px;
+}
+
+.button-group button {
+    border: 1px solid black;
+    padding: 10px 10px;
+    float: left; /* Float the buttons side by side */
+    width: 7%;
+    margin: 10px;
+}
+
+.checkout-details-container {
+    width: 15%;
+    padding: 10px;
+    margin-left: 40%;
+}
+
+.login-container {
+    margin: auto;
+    width: 15%;
+    border: 3px solid black;
+    padding: 30px;
+    text-align: center;
+}
+
+.order-container {
+    margin: auto;
+    width: 30%;
+    border: 2px solid black;
+    padding: 30px;
+    text-align: center;
+}
+
+.order-product-container {
+    text-align: center;
+    font-size: 15px;
+    border: 1px solid lightgrey;
+    width: 30%;
+    margin: auto;
+}
+
+table{
+    text-align: center;
+}
+
+th{
+    font-size: 30px;
+}
+
+th,td{
+    padding: 20px;
+    width: 20%;
+}
+
+.errors{
+    color:red;
+}
+
+h1{
+    margin-left: 3%;
+}
+
+input#name{
+    width: 100%;
+}
+
+input#contacts{
+    width: 100%;
+}
+
+textarea#comments{
+    width: 100%;
+}
+
+.button {
+    font: bold 15px Arial;
+    background-color: #EEEEEE;
+    text-decoration: none;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border: 1px solid black;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+input[type="submit"]{
+    font: bold 15px Arial;
+    background-color: #EEEEEE;
+    text-decoration: none;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border: 1px solid black;
+}
+
+.error-message{
+    color: red;
+    margin-left: 5%;
+    font-size: large;
+}
+
+.button-products {
+    font: bold 15px Arial;
+    background-color: #EEEEEE;
+    text-decoration: none;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border: 1px solid black;
+}
+
+.status{
+    color: green;
+    font-size: 25px;
+}
+
+input[type="file"]{
+    margin-left: 20%;
+}
+
+input#cname{
+    width: 60%;
+}
+
+textarea#comment{
+    width: 60%;
+}
+
+.rating{
+    background-color: #f2f2f2;
+    border: 1px solid #e6e6e6;
+    padding: 10px;
+    margin: auto;
+    width: 40%;
+}
+
+.ratings{
+    padding: 20px;
+    margin: auto;
+    width: 60%;
+}
+
+.rate{
+    border-bottom: 1px solid grey;
+    text-align: left;
+}
+
+#approve{
+    color:green;
+}
+
+#reject{
+    color: red;
+}
+
+span{
+    color: #3d4852;
+}
+
+div.pager {
+    text-align: center;
+    margin: 1em 0;
+}
+
+div.pager span {
+    display: inline-block;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1.8;
+    text-align: center;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    margin-right: 0.5em;
+}
+
+div.pager span.active {
+    background: #c00;
+}

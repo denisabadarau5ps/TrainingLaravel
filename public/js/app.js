@@ -5862,11 +5862,21 @@ __webpack_require__.r(__webpack_exports__);
 
     if (id != 0) {
       this.editProduct(id);
+    } else {
+      this.addProduct();
     }
   },
   methods: {
     editProduct: function editProduct(id) {
       console.log(id);
+      this.product.title = 'Title';
+      this.product.description = 'Desc';
+      this.product.price = '123';
+    },
+    addProduct: function addProduct() {
+      this.product.title = '';
+      this.product.description = '';
+      this.product.price = '';
     },
     submit: function submit() {
       console.log('submit');

@@ -17,10 +17,9 @@ class IndexController extends Controller
         $cart = $request->session()->get('cart', []);
         /** @var Builder $products */
         $products = Product::whereNotIn('id', $cart)->get();
-        /*if ($request->expectsJson()) {
+        if ($request->expectsJson()) {
             return response()->json(['products' => $products]);
-        }*/
-        return response()->json(['products' => $products]);
-        //return view('index', ['products' => $products->get()]);
+        }
+        return view('index', ['products' => $products]);
     }
 }

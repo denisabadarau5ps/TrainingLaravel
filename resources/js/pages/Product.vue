@@ -66,11 +66,21 @@ export default {
         var id = this.$route.path.split('/')[2];
         if (id != 0) {
             this.editProduct(id);
+        } else {
+            this.addProduct();
         }
     },
     methods: {
         editProduct(id) {
             console.log(id);
+            this.product.title = 'Title';
+            this.product.description = 'Desc';
+            this.product.price = '123';
+        },
+        addProduct() {
+            this.product.title = '';
+            this.product.description = '';
+            this.product.price = '';
         },
         submit() {
             console.log('submit');

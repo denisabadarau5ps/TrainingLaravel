@@ -14,7 +14,7 @@ use App\Http\Controllers\ProductsController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
+Route::get('/', 'App\Http\Controllers\IndexController@index')->name('index');
 Route::post('/', 'App\Http\Controllers\CartController@store')->name('add.to.cart');
 
 Route::get('/cart', 'App\Http\Controllers\CartController@index')->name('show.cart');
@@ -35,11 +35,5 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('/orders', 'App\Http\Controllers\OrdersController@index')->name('orders');
     Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order');
-});*/
-
-//Route::get('index',  'App\Http\Controllers\CartController@index');
-
-Route::get('/{any}', function () {
-    return view('index');
-})->where('any', '.*');
+});
 
