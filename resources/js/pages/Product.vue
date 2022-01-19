@@ -10,7 +10,6 @@
                 type="text"
                 id="title"
                 placeholder="Title"
-                value="{{ product.title }}"
             >
             <br>
             <span class="errors"> {{ errorTitle }} </span>
@@ -20,7 +19,6 @@
                 id="description"
                 placeholder="Description"
             >
-                {{ product.description }}
             </textarea>
             <br>
             <span class="errors"> {{ errorDescription}} </span>
@@ -30,7 +28,6 @@
                 type="number"
                 id="price"
                 placeholder="Price"
-                value="{{ product.price }}"
             >
             <br>
             <span class="errors">{{ errorPrice}}</span>
@@ -85,7 +82,7 @@ export default {
 <style scoped>
     .product-container{
         margin: auto;
-        width: 20%;
+        width: 30%;
         border: 3px solid black;
         padding: 30px;
         text-align: center;

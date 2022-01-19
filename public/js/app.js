@@ -5841,9 +5841,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Product",
   data: function data() {
@@ -11283,7 +11280,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.product-container[data-v-b8645414]{\n    margin: auto;\n    width: 20%;\n    border: 3px solid black;\n    padding: 30px;\n    text-align: center;\n}\n.errors[data-v-b8645414]{\n    color:red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.product-container[data-v-b8645414]{\n    margin: auto;\n    width: 30%;\n    border: 3px solid black;\n    padding: 30px;\n    text-align: center;\n}\n.errors[data-v-b8645414]{\n    color:red;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31462,8 +31459,131 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* binding */ render),
 /* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
 /* harmony export */ });
-var render = function () {}
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "product-container" }, [
+    _c("h1", [_vm._v("Product Form")]),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        attrs: { method: "post" },
+        on: {
+          submit: function ($event) {
+            $event.preventDefault()
+            return _vm.submit.apply(null, arguments)
+          },
+        },
+      },
+      [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.title,
+              expression: "title",
+            },
+          ],
+          attrs: { type: "text", id: "title", placeholder: "Title" },
+          domProps: { value: _vm.title },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.title = $event.target.value
+            },
+          },
+        }),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("span", { staticClass: "errors" }, [
+          _vm._v(" " + _vm._s(_vm.errorTitle) + " "),
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.description,
+              expression: "description",
+            },
+          ],
+          attrs: { id: "description", placeholder: "Description" },
+          domProps: { value: _vm.description },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.description = $event.target.value
+            },
+          },
+        }),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("span", { staticClass: "errors" }, [
+          _vm._v(" " + _vm._s(_vm.errorDescription) + " "),
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.price,
+              expression: "price",
+            },
+          ],
+          attrs: { type: "number", id: "price", placeholder: "Price" },
+          domProps: { value: _vm.price },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.price = $event.target.value
+            },
+          },
+        }),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("span", { staticClass: "errors" }, [_vm._v(_vm._s(_vm.errorPrice))]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", {
+          staticStyle: { "margin-left": "20%" },
+          attrs: { type: "file", id: "file" },
+        }),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("span", { staticClass: "errors" }, [_vm._v(_vm._s(_vm.errorFile))]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("input", { attrs: { type: "submit", value: "Save" } }),
+        _vm._v(" "),
+        _c("br"),
+        _c("br"),
+      ]
+    ),
+  ])
+}
 var staticRenderFns = []
+render._withStripped = true
 
 
 
