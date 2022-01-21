@@ -12,16 +12,27 @@ class ProductController extends Controller
     /**
      * Show store/edit form for a product
      */
-    public function index(Request $request)
+    public function index(Request $request, $id = 0)
     {
-        $id = $request->query('id');
-        $product = Product::where('id', $id)->first();
+        /*$product = Product::where('id', $id)->first();
         if($product && $product->exists() || $id == 0) {
             if($request->expectsJson()) {
                 return response()->json($product);
             } else {
-                view('product-form', ['id' => $id, 'product' => $product]);
+                view('product-form', ['product' => $product]);
             }
+        }*/
+        $product = \GetCandy\Models\Product::where('id', $id)->first();
+        if ($product && $product->exists()) {
+            return view('product-form', [
+                'id' => $id,
+                'product' => $product,
+            ]);
+        } else {
+            return view('product-form', [
+                'id' => $id,
+                'product' => [],
+            ]);
         }
     }
 

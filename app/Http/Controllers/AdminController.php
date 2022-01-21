@@ -26,16 +26,17 @@ class AdminController extends Controller
      */
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validatedData = $request->validate([
             'username' => 'required',
             'password' => 'required'
         ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
-        }
-        if ($request->input('username') == config('admin.username')
-            && $request->input('password') == config('admin.password')) {
+        if ($validatedData['username'] == config('admin.username')
+            && $validatedData['password'] == config('admin.password')) {
             $request->session()->push('admin', true);
+            if($request->expectsJson()) {
+                return response()->json(['success' => 'Success']);
+            }
+            return redirect()->route('products');
         }
     }
 

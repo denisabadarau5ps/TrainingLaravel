@@ -22,4 +22,10 @@ class IndexController extends Controller
         }
         return view('index', ['products' => $products]);
     }
+
+    public function test()
+    {
+        $products = \GetCandy\Models\Product::all();
+        return view('test', ['products' => $products]);
+    }
 }

@@ -17,6 +17,8 @@ use App\Http\Controllers\ProductsController;
 Route::get('/', 'App\Http\Controllers\IndexController@index')->name('index');
 Route::post('/', 'App\Http\Controllers\CartController@store')->name('add.to.cart');
 
+Route::get('test', 'App\Http\Controllers\IndexController@test');
+
 Route::get('/cart', 'App\Http\Controllers\CartController@index')->name('show.cart');
 Route::post('/cart', 'App\Http\Controllers\CartController@remove')->name('remove.from.cart');
 
@@ -27,13 +29,22 @@ Route::get('/login', 'App\Http\Controllers\AdminController@index')->name('login.
 Route::post('/login', 'App\Http\Controllers\AdminController@login')->name('login');
 Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
 
-Route::middleware(['admin'])->group(function () {
+Route::post('/product/', 'App\Http\Controllers\ProductController@save')->name('store');
+Route::post('/product/{id}', 'App\Http\Controllers\ProductController@save')->name('edit');
+Route::get('/product/{id?}', 'App\Http\Controllers\ProductController@index')->name('show.product.form');
+
+Route::get('/products', 'App\Http\Controllers\ProductsController@index')->name('products');
+Route::post('/products', 'App\Http\Controllers\ProductsController@remove')->name('remove.product');
+
+/*Route::middleware(['admin'])->group(function () {
     Route::get('/products', 'App\Http\Controllers\ProductsController@index')->name('products');
     Route::post('/products', 'App\Http\Controllers\ProductsController@remove')->name('remove.product');
-    Route::post('/product', 'App\Http\Controllers\ProductController@save')->name('store');
-    Route::get('/product', 'App\Http\Controllers\ProductController@index')->name('show.product.form');
+
+    Route::post('/product/', 'App\Http\Controllers\ProductController@save')->name('store');
+    Route::post('/product/{id}', 'App\Http\Controllers\ProductController@save')->name('edit');
+    Route::get('/product/{id?}', 'App\Http\Controllers\ProductController@index')->name('show.product.form');
 
     Route::get('/orders', 'App\Http\Controllers\OrdersController@index')->name('orders');
     Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order');
-});
+});*/
 

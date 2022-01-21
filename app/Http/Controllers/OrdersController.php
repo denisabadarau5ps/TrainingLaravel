@@ -33,38 +33,42 @@ class OrdersController extends Controller
      */
     public function checkout(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'contacts' => 'required',
-            'comments' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([ 'error' => $validator->errors()], 401);
+        $validatedData = $this->validateData($request);
+        if ($request->session()->has('cart')) {
+            $cart = $request->session()->get('cart');
+            $products = Product::whereIn('id', $cart)->get();
+            $request->session()->forget('cart');
+
+            $customer = new Customer();
+            $customer->name = $validatedData['name'];
+            $customer->contacts = $validatedData['contacts'];
+            $customer->comments = $validatedData['comments'];
+            $customer->save();
+
+            $order = new Order();
+            $order->total = 0;
+            $customer->order()->save($order);
+
+            foreach ($products as $product) {
+                $order->products()->attach($product, [
+                    'product_price' => $product->price
+                ]);
+                $order->total += $product->price;
+            }
+            $customer->order()->save($order);
+
+            Mail::to(config('mail.to.adress'))
+                ->send(new Checkout($order));
+            if($request->expectsJson()) {
+                return response()->json(['success' => 'Successfully']);
+            }
+            return redirect()->route('index');
+        } else {
+            if($request->expectsJson()) {
+                return response()->json(['message' => 'Cart cant be empty']);
+            }
+            return redirect()->back()->withInput()->with('message','Cart cant be empty');
         }
-        $cart = $request->session()->get('cart');
-        $products = Product::whereIn('id', $cart)->get();
-        $request->session()->forget('cart');
-
-        $customer = new Customer();
-        $customer->name = $request->input('name');
-        $customer->contacts = $request->input('contacts');
-        $customer->comments = $request->input('comments');
-        $customer->save();
-
-        $order = new Order();
-        $order->total = 0;
-        $customer->order()->save($order);
-
-        foreach ($products as $product) {
-            $order->products()->attach($product, [
-                'product_price' => $product->price
-            ]);
-            $order->total += $product->price;
-        }
-        $customer->order()->save($order);
-
-        Mail::to(config('mail.to.adress'))
-            ->send(new Checkout($order));
     }
 
     /**

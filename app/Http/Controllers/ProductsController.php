@@ -15,12 +15,11 @@ class ProductsController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::all();
-        /*if($request->expectsJson()) {
+        $products = \GetCandy\Models\Product::all();
+        if($request->expectsJson()) {
             return response()->json($products);
         }
-        return view('products', ['products' => $products]);*/
-        return response()->json(['products' => $products]);
+        return view('products', ['products' => $products]);
     }
 
     /**
@@ -32,12 +31,8 @@ class ProductsController extends Controller
     {
         if ($request->has('id')) {
             $id = $request->input('id');
-            $product = Product::findOrFail($id);
+            $product = \GetCandy\Models\Product::findOrFail($id);
 
-            $imagename = $product->id . '.' . $product->extension;
-            if (Storage::exists($imagename)) {
-                Storage::delete($imagename);
-            }
             $product->delete();
             if($request->expectsJson()) {
                 return response()->json(['success' => 'Product deleted successfully']);
