@@ -12,12 +12,12 @@
         @foreach($products as $product)
             <tr>
                 <td>
-                    <img class="product-image" src="{{ $product->thumbnail->getUrl('small') }}" />
+                    <img class="product-image" src="{{$product->getFirstMediaUrl('products', 'thumb')}}"/>
                 </td>
                 <td> {{ $product->translateAttribute('name') }} </td>
                 <td> {{ $product->translateAttribute('description') }} </td>
                 <td>
-                    ${{ ($product->variants->pluck('prices')->flatten()->sortBy('price')->first())->price }}
+                    {{ $product->variants->pluck('prices')->flatten()->sortBy('price')->first()->price->formatted }}
                 </td>
                 <td>
                     <a href="{{ route('show.product.form', ['id' => $product->id]) }}" class="button-products">@lang('buttons.edit')</a>

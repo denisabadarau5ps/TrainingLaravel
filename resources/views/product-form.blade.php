@@ -6,7 +6,7 @@
         @if (session('status'))
             <p class="status">{{ session('status') }}</p>
         @endif
-        <form method="post"action="{{ $id == 0 ? route('store', ['id' => 0]) : route('edit', ['id' => $id])  }}" enctype="multipart/form-data">
+        <form method="post" action="{{ route('store', ['id' => $id]) }}" enctype="multipart/form-data">
             @csrf
             <input
                 type="text"
@@ -31,15 +31,13 @@
                 type="number"
                 name="price"
                 placeholder=@lang('product.price')
-                    value="{{ $product
-                    ? ($product->variants->pluck('prices')->flatten()->sortBy('price')->first())->price
-                    : old('price')}}">
+                    value="{{ $product ? $product->variants->pluck('prices')->flatten()->sortBy('price')->first()->price : old('price')}}">
             <br>
             @error('price')
                 <p class="error-message">{{ $message }}</p>
             @enderror
             <br>
-            <input type="file" name="fileToUpload" id="fileToUpload" style="margin-left: 20%;">
+            <input type="file" name="filename" id="filename" style="margin-left: 20%;">
             <br>
             @error('fileToUpload')
                 <p class="error-message">{{ $message }}</p>

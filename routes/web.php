@@ -29,9 +29,8 @@ Route::get('/login', 'App\Http\Controllers\AdminController@index')->name('login.
 Route::post('/login', 'App\Http\Controllers\AdminController@login')->name('login');
 Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
 
-Route::post('/product/', 'App\Http\Controllers\ProductController@save')->name('store');
-Route::post('/product/{id}', 'App\Http\Controllers\ProductController@save')->name('edit');
-Route::get('/product/{id?}', 'App\Http\Controllers\ProductController@index')->name('show.product.form');
+Route::post('/product/{id}', 'App\Http\Controllers\ProductController@save')->name('store');
+Route::get('/product/{id}', 'App\Http\Controllers\ProductController@index')->name('show.product.form');
 
 Route::get('/products', 'App\Http\Controllers\ProductsController@index')->name('products');
 Route::post('/products', 'App\Http\Controllers\ProductsController@remove')->name('remove.product');

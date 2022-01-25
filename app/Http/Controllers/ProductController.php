@@ -47,7 +47,7 @@ class ProductController extends Controller
             'title' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
-            'fileToUpload' => 'required|image',
+            'filename' => 'required|image',
         ]);
     }
 
@@ -56,41 +56,59 @@ class ProductController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Request $request)
+    public function save(Request $request, $id)
     {
         $validatedData = $this->validateData($request);
-        $id = $request->input('id');
-        $image = $request->file('fileToUpload');
         if ($id != 0) {
-            $product = Product::where('id', $id)->first();
-            $imagename = $product->id . '.' . $product->extension;
-            if (Storage::exists($imagename)) {
-                Storage::delete($imagename);
-            }
+            \GetCandy\Models\Product::where('id', $id)
+                ->update([
+                    'attribute_data' => [
+                        'name' => new \GetCandy\FieldTypes\TranslatedText(collect([
+                            'en' => new \GetCandy\FieldTypes\Text($validatedData['title']),
+                        ])),
+                        'description' => new \GetCandy\FieldTypes\Text($validatedData['description']),
+                    ],
+                ]);
+            $product =  \GetCandy\Models\Product::find($id);
+            $price = $product->variants->pluck('prices')->flatten()->sortBy('price')->first()->price;
+            dd($price);
+            $price->update([
+                'price' => $validatedData['price'],
+            ]);
         } else {
-            $product = new Product();
+            $product = \GetCandy\Models\Product::create([
+                'product_type_id' => '1',
+                'status' => 'published',
+                'brand' => 'Test',
+                'attribute_data' => [
+                    'name' => new \GetCandy\FieldTypes\TranslatedText(collect([
+                        'en' => new \GetCandy\FieldTypes\Text($validatedData['title']),
+                    ])),
+                    'description' => new \GetCandy\FieldTypes\Text($validatedData['description']),
+                ],
+            ]);
+            $variant = \GetCandy\Models\ProductVariant::create([
+                'product_id' => $product->id,
+                'tax_class_id' => '1',
+                'sku' => 'test' . $product->id,
+            ]);
+            \GetCandy\Models\Price::create([
+                'price' => $validatedData['price'],
+                'compare_price' => 0,
+                'currency_id' => 1,
+                'tier' => 1,
+                'customer_group_id' => null,
+                'priceable_type' => 'GetCandy\Models\ProductVariant',
+                'priceable_id' => $variant->id,
+            ]);
         }
-        $product->title = $validatedData['title'];
-        $product->description = $validatedData['description'];
-        $product->price = $validatedData['price'];
-        $product->extension = $image->extension();
-        $product->save();
-
-        $imagename = $product->id . '.' . $product->extension;
-        $image->storeAs('public/images', $imagename);
-        if ($id == null) {
-            if($request->expectsJson()) {
-                return response()->json(['success' => 'Product saved']);
-            }
-            return redirect()->route('store')
-                ->with('status', 'Product saved');
-        } else {
-            if($request->expectsJson()) {
-                return response()->json(['succes' => 'Product saved']);
-            }
-            return redirect()->route('edit', ['id' => $id])
-                ->with('status', 'Product saved');
+        if($request->hasFile('filename') && $request->file('filename')->isValid()) {
+            $product->addMediaFromRequest('filename')->toMediaCollection('products');
         }
+        if($request->expectsJson()) {
+            return response()->json(['success' => 'Product saved']);
+        }
+        return redirect()->route('products');
     }
 
     /**
