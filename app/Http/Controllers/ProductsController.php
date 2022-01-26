@@ -33,7 +33,7 @@ class ProductsController extends Controller
             $id = $request->input('id');
             $product = \GetCandy\Models\Product::findOrFail($id);
 
-            $product->getFirstMedia('products')->delete();
+            $product->clearMediaCollection('products');
             $product->delete();
             if($request->expectsJson()) {
                 return response()->json(['success' => 'Product deleted successfully']);

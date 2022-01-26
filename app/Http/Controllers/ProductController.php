@@ -60,8 +60,8 @@ class ProductController extends Controller
     {
         $validatedData = $this->validateData($request);
         if ($id != 0) {
-            \GetCandy\Models\Product::where('id', $id)
-                ->update([
+            $product =  \GetCandy\Models\Product::find($id);
+            $product->update([
                     'attribute_data' => [
                         'name' => new \GetCandy\FieldTypes\TranslatedText(collect([
                             'en' => new \GetCandy\FieldTypes\Text($validatedData['title']),
@@ -69,12 +69,10 @@ class ProductController extends Controller
                         'description' => new \GetCandy\FieldTypes\Text($validatedData['description']),
                     ],
                 ]);
-            $product =  \GetCandy\Models\Product::find($id);
-            $price = $product->variants->pluck('prices')->flatten()->sortBy('price')->first()->price;
-            dd($price);
+            $price = $product->variants->pluck('prices')->flatten()->sortBy('price')->first();
             $price->update([
-                'price' => $validatedData['price'],
-            ]);
+                'price' =>  $validatedData['price'],
+            ]) ;
         } else {
             $product = \GetCandy\Models\Product::create([
                 'product_type_id' => '1',
@@ -103,6 +101,7 @@ class ProductController extends Controller
             ]);
         }
         if($request->hasFile('filename') && $request->file('filename')->isValid()) {
+            $product->clearMediaCollection('products');
             $product->addMediaFromRequest('filename')->toMediaCollection('products');
         }
         if($request->expectsJson()) {
